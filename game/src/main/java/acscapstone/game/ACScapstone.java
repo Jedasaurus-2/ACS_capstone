@@ -17,6 +17,8 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.jme3.ui.Picture;
 
+import java.util.ArrayList;
+
 
 /**
  * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
@@ -27,7 +29,10 @@ import com.jme3.ui.Picture;
 public class ACScapstone extends SimpleApplication {
 
     private Geometry geom1;
+    private int incrementer = 2;
     private float timePassed = 0f;
+    private ArrayList<Geometry> geoms = new ArrayList<>();
+    private Material mat;
 
     public ACScapstone() {
     }
@@ -39,15 +44,12 @@ public class ACScapstone extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         geom1 = new Geometry("Cube", new Box(1f,1f,1f));
-
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
+        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setTexture("ColorMap", tex);
         geom1.setMaterial(mat);
-
         initKeys();
         initCrosshair();
-
         rootNode.attachChild(geom1);
     }
 
@@ -119,6 +121,15 @@ public class ACScapstone extends SimpleApplication {
         float yawSpeed = 0.1f * tpf;
         geom1.rotate(yawSpeed, rollSpeed, pitchSpeed);
         timePassed += tpf;
-
+        if (timePassed >= 1f) {
+            timePassed -= 1f;
+            geoms.add(new Geometry("Cube", new Box(1, 1, 1)));
+            geoms.getLast().setMaterial(mat);
+            geoms.getLast().move(incrementer, 0, 0);
+            rootNode.attachChild(geoms.getLast());
+            incrementer += 2;
+            System.out.println(geoms);
+        }
     }
 }
+
