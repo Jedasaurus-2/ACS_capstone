@@ -31,8 +31,10 @@ public class ACScapstone extends SimpleApplication {
     public ACScapstone(AppState... initialStates) {
         super(initialStates);
     }
-    public float hAngle;
-    public float yAngle;
+    private float hAngle = 0f;
+    private float vAngle = 0f;
+    private float distance = 10f;
+    private final float converter = 3.14159265359f / 360f;
 
     @Override
     public void simpleInitApp() {
@@ -55,36 +57,27 @@ public class ACScapstone extends SimpleApplication {
     private void initKeys() {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
-        inputManager.addMapping("Forward", new KeyTrigger(KeyInput.KEY_W));
-        inputManager.addMapping("Back", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_LSHIFT));
-        inputManager.addListener(analogListener, "Left", "Right", "Forward", "Back", "Up", "Down");
+        inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
+        inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+        inputManager.addListener(analogListener, "Left", "Right", "Up", "Down");
     }
 
     private final AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
             float speed = 10f;
-            Vector3f v = new Vector3f(0, 0, 0);
             switch (name) {
                 case "Left":
-                    v = cam.getLeft().mult(speed * tpf);
+                    hAngle -= 1f;
                     break;
                 case "Right":
-                    v = cam.getLeft().mult(-speed * tpf);
-                    break;
-                case "Forward":
-                    v = cam.getDirection().mult(speed * tpf);
-                    break;
-                case "Back":
-                    v = cam.getDirection().mult(-speed * tpf);
+                     hAngle += 1f;
                     break;
                 case "Up":
-                    v = cam.getUp().mult(speed * tpf);
+                    vAngle += 1f;
                     break;
                 case "Down":
-                    v = cam.getUp().mult(-speed * tpf);
+                    vAngle -= 1f;
                     break;
                 case "RotateLeft":
                 case "RotateRight":
@@ -94,7 +87,9 @@ public class ACScapstone extends SimpleApplication {
                     cam.setRotation(cam.getRotation().mult(q));
                     break;
             }
-            cam.setLocation(cam.getLocation().addLocal(v));
+            System.out.println(getCameraPosition());
+            cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
+            cam.setLocation(getCameraPosition());
         }
     };
 
@@ -119,6 +114,19 @@ public class ACScapstone extends SimpleApplication {
             myWindow.attachChild(label);
         }
         guiNode.attachChild(myWindow);
+    }
+
+    private Vector3f getCameraPosition(){
+        Vector3f pos = new Vector3f();
+        pos.x = (float) (Math.sin(converter*hAngle)*Math.cos(converter*hAngle))*distance;
+        pos.y = (float) (Math.sin(converter*hAngle)*Math.sin(converter*hAngle))*distance;
+        pos.z = (float) (Math.cos(converter*vAngle))*distance;
+        return pos;
+    }
+
+    private Quaternion generateCameraQuaternian(){
+        Quaternion q = new Quaternion();
+        return q;
     }
 }
 
