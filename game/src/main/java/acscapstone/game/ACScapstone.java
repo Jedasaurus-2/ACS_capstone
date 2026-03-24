@@ -17,6 +17,8 @@ import com.simsilica.lemur.Container;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.Label;
 
+import java.util.Arrays;
+
 
 /**
  * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
@@ -34,11 +36,12 @@ public class ACScapstone extends SimpleApplication {
     private float hAngle = 0f;
     private float vAngle = 0f;
     private float distance = 10f;
-    private final float converter = 3.14159265359f / 360f;
+    private final float converter = 2f * 3.14159265359f / 360f;
 
     @Override
     public void simpleInitApp() {
         Geometry geom1 = new Geometry("Sphere", new Sphere(35,35,1f));
+        geom1.rotate(0f,0f,0f);
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
@@ -65,19 +68,19 @@ public class ACScapstone extends SimpleApplication {
     private final AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
-            float speed = 10f;
+            float speed = 0.5f;
             switch (name) {
                 case "Left":
-                    hAngle -= 1f;
+                    hAngle -= speed;
                     break;
                 case "Right":
-                     hAngle += 1f;
+                     hAngle += speed;
                     break;
                 case "Up":
-                    vAngle += 1f;
+                    vAngle += speed;
                     break;
                 case "Down":
-                    vAngle -= 1f;
+                    vAngle -= speed;
                     break;
                 case "RotateLeft":
                 case "RotateRight":
@@ -87,7 +90,7 @@ public class ACScapstone extends SimpleApplication {
                     cam.setRotation(cam.getRotation().mult(q));
                     break;
             }
-            System.out.println(getCameraPosition());
+            System.out.println(cam.getLocation().toString());
             cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
             cam.setLocation(getCameraPosition());
         }
@@ -118,9 +121,9 @@ public class ACScapstone extends SimpleApplication {
 
     private Vector3f getCameraPosition(){
         Vector3f pos = new Vector3f();
-        pos.x = (float) (Math.sin(converter*hAngle)*Math.cos(converter*hAngle))*distance;
-        pos.y = (float) (Math.sin(converter*hAngle)*Math.sin(converter*hAngle))*distance;
-        pos.z = (float) (Math.cos(converter*vAngle))*distance;
+        pos.x = (float) Math.cos(converter * hAngle) * distance;
+        pos.y = (float) Math.sin(converter * hAngle) * distance;
+        pos.z = 0f * (float) (Math.cos(converter * vAngle)) * distance;
         return pos;
     }
 
