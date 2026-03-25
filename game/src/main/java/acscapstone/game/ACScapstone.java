@@ -32,6 +32,7 @@ public class ACScapstone extends SimpleApplication {
         super(initialStates);
     }
     private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
+    private final UIHelper uiHelper = new UIHelper();
 
     @Override
     public void simpleInitApp() {
@@ -51,7 +52,8 @@ public class ACScapstone extends SimpleApplication {
         rootNode.attachChild(geom1);
 
         GuiGlobals.initialize(this);
-        instantiateAllUI();
+
+        initCrosshair();
     }
 
     private void initKeys() {
@@ -93,25 +95,6 @@ public class ACScapstone extends SimpleApplication {
     };
 
     private void initCrosshair() {
-        Picture crosshair = new Picture("crosshair");
-        crosshair.setImage(assetManager, "Textures/Crosshair.png", true);
-        float width = 15;
-        float height = 15;
-        crosshair.setWidth(width);
-        crosshair.setHeight(height);
-        float x = (settings.getWidth() / 2f) - (width / 2f);
-        float y = (settings.getHeight() / 2f) - (height / 2f);
-        crosshair.setPosition(x, y);
-        guiNode.attachChild(crosshair);
-    }
-
-    private void instantiateAllUI(){
-        Container myWindow = new Container();
-        for (int x = 0; x < 16; x++){
-            Label label = new Label("Hello, World");
-            myWindow.attachChild(label);
-        }
-        guiNode.attachChild(myWindow);
+        guiNode.attachChild(uiHelper.makeCrosshair(assetManager, settings));
     }
 }
-
