@@ -17,9 +17,6 @@ import com.simsilica.lemur.Container;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.Label;
 
-import java.util.Arrays;
-
-
 /**
  * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
  * Custom states {@link com.jme3.app.state.BaseAppState}, Custom controls {@link com.jme3.scene.control.AbstractControl}
@@ -34,14 +31,14 @@ public class ACScapstone extends SimpleApplication {
         super(initialStates);
     }
     private float hAngle = 0f;
-    private float vAngle = 0f;
+    private float vAngle = 90f;
     private float distance = 10f;
-    private final float converter = 2f * 3.14159265359f / 360f;
 
     @Override
     public void simpleInitApp() {
         Geometry geom1 = new Geometry("Sphere", new Sphere(35,35,1f));
-        geom1.rotate(0f,0f,0f);
+        Vector3f v1 = new Vector3f(0f, 0f, -1f);
+        geom1.rotateUpTo(v1);
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
@@ -71,16 +68,18 @@ public class ACScapstone extends SimpleApplication {
             float speed = 0.5f;
             switch (name) {
                 case "Left":
-                    hAngle -= speed;
+                    hAngle += speed;
+                    hAngle %= 360;
                     break;
                 case "Right":
-                     hAngle += speed;
+                     hAngle -= speed;
+                     hAngle %= 360;
                     break;
                 case "Up":
-                    vAngle += speed;
+                    if (!(vAngle - speed < 1)) vAngle -= speed;
                     break;
                 case "Down":
-                    vAngle -= speed;
+                    if (!(vAngle + speed > 179)) vAngle += speed;
                     break;
                 case "RotateLeft":
                 case "RotateRight":
@@ -90,7 +89,7 @@ public class ACScapstone extends SimpleApplication {
                     cam.setRotation(cam.getRotation().mult(q));
                     break;
             }
-            System.out.println(cam.getLocation().toString());
+            System.out.println(hAngle + ", " + vAngle);
             cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
             cam.setLocation(getCameraPosition());
         }
@@ -98,7 +97,6 @@ public class ACScapstone extends SimpleApplication {
 
     private void initCrosshair() {
         Picture crosshair = new Picture("crosshair");
-        Texture2D tex = (Texture2D) assetManager.loadTexture("Textures/Crosshair.png");
         crosshair.setImage(assetManager, "Textures/Crosshair.png", true);
         float width = 15;
         float height = 15;
@@ -121,15 +119,16 @@ public class ACScapstone extends SimpleApplication {
 
     private Vector3f getCameraPosition(){
         Vector3f pos = new Vector3f();
-        pos.x = (float) Math.cos(converter * hAngle) * distance;
-        pos.y = (float) Math.sin(converter * hAngle) * distance;
-        pos.z = 0f * (float) (Math.cos(converter * vAngle)) * distance;
+        float converter = 2f * 3.14159265359f / 360f;
+        pos.x = (float) (Math.cos(converter * hAngle) * Math.sin(converter * vAngle) * distance);
+        pos.z = (float) (Math.sin(converter * hAngle) * Math.sin(converter * vAngle) * distance);
+        pos.y = (float) Math.cos(converter * vAngle) * distance;
         return pos;
     }
 
-    private Quaternion generateCameraQuaternian(){
-        Quaternion q = new Quaternion();
-        return q;
+    private float abs(float x){
+        if (x < 0) return x * -1;
+        return x;
     }
 }
 
