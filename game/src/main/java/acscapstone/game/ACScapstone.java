@@ -17,6 +17,7 @@ import com.simsilica.lemur.Container;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.Label;
 
+
 /**
  * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
  * Custom states {@link com.jme3.app.state.BaseAppState}, Custom controls {@link com.jme3.scene.control.AbstractControl}
@@ -30,9 +31,7 @@ public class ACScapstone extends SimpleApplication {
     public ACScapstone(AppState... initialStates) {
         super(initialStates);
     }
-    private float hAngle = 0f;
-    private float vAngle = 90f;
-    private float distance = 10f;
+    private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
 
     @Override
     public void simpleInitApp() {
@@ -44,6 +43,7 @@ public class ACScapstone extends SimpleApplication {
 
         mat.setTexture("ColorMap", tex);
         geom1.setMaterial(mat);
+
 
         initKeys();
         flyCam.setDragToRotate(true);
@@ -68,18 +68,16 @@ public class ACScapstone extends SimpleApplication {
             float speed = 0.5f;
             switch (name) {
                 case "Left":
-                    hAngle += speed;
-                    hAngle %= 360;
+                    camRotationHelper.incrementHAngle(speed);
                     break;
                 case "Right":
-                     hAngle -= speed;
-                     hAngle %= 360;
+                     camRotationHelper.incrementHAngle(-speed);
                     break;
                 case "Up":
-                    if (!(vAngle - speed < 1)) vAngle -= speed;
+                    camRotationHelper.incrementVAngle(-speed);
                     break;
                 case "Down":
-                    if (!(vAngle + speed > 179)) vAngle += speed;
+                    camRotationHelper.incrementVAngle(speed);
                     break;
                 case "RotateLeft":
                 case "RotateRight":
@@ -89,9 +87,8 @@ public class ACScapstone extends SimpleApplication {
                     cam.setRotation(cam.getRotation().mult(q));
                     break;
             }
-            System.out.println(hAngle + ", " + vAngle);
             cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
-            cam.setLocation(getCameraPosition());
+            cam.setLocation(camRotationHelper.generatePosition());
         }
     };
 
@@ -115,20 +112,6 @@ public class ACScapstone extends SimpleApplication {
             myWindow.attachChild(label);
         }
         guiNode.attachChild(myWindow);
-    }
-
-    private Vector3f getCameraPosition(){
-        Vector3f pos = new Vector3f();
-        float converter = 2f * 3.14159265359f / 360f;
-        pos.x = (float) (Math.cos(converter * hAngle) * Math.sin(converter * vAngle) * distance);
-        pos.z = (float) (Math.sin(converter * hAngle) * Math.sin(converter * vAngle) * distance);
-        pos.y = (float) Math.cos(converter * vAngle) * distance;
-        return pos;
-    }
-
-    private float abs(float x){
-        if (x < 0) return x * -1;
-        return x;
     }
 }
 
