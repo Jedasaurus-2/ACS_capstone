@@ -11,12 +11,8 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture2D;
-import com.jme3.ui.Picture;
-import com.simsilica.lemur.Container;
 import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.Label;
-
+import com.simsilica.lemur.style.BaseStyles;
 
 /**
  * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
@@ -52,8 +48,7 @@ public class ACScapstone extends SimpleApplication {
 
         rootNode.attachChild(geom1); // Actually add the geometry object (3D shape)
 
-        GuiGlobals.initialize(this); // Initialize the UI
-        guiNode.attachChild(uiHelper.makeCrosshair(assetManager, settings)); // Call UiHelper to make the crosshair
+        attachUI(); // Attach all the UI stuffs
     }
 
     private void initKeys() {
@@ -94,4 +89,10 @@ public class ACScapstone extends SimpleApplication {
             cam.setLocation(camRotationHelper.generatePosition());
         }
     };
+
+    public void attachUI(){
+        GuiGlobals.initialize(this); // Initialize the UI
+        BaseStyles.loadStyleResources("Styles/test-style-1.groovy");
+        guiNode.attachChild(uiHelper.makeButton("Hallo", assetManager, settings)); // Makes a button
+    }
 }

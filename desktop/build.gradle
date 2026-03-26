@@ -19,6 +19,7 @@ dependencies {
     implementation project(path: ':game')
     implementation libs.jmeDesktop
     implementation libs.jmeLwjgl3
+    implementation 'org.codehaus.groovy:groovy-all:2.4.15'
 
 }
 distZip {
@@ -75,5 +76,7 @@ task buildAllDistributions{
     doLast {
         println("Distributions created in build/distributions folder")
     }
+
+
 }
 

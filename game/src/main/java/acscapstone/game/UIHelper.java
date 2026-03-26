@@ -3,21 +3,18 @@ package acscapstone.game;
 import com.jme3.asset.AssetManager;
 import com.jme3.system.AppSettings;
 import com.jme3.ui.Picture;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.style.BaseStyles;
+import com.simsilica.lemur.style.ElementId;
+import com.simsilica.lemur.style.Styles;
 
 public class UIHelper {
 
     public UIHelper() {}
 
-    public Picture makeCrosshair(AssetManager assetManager, AppSettings settings) {
-        Picture crosshair = new Picture("crosshair");
-        crosshair.setImage(assetManager, "Textures/Crosshair.png", true);
-        float width = 30;
-        float height = 30;
-        crosshair.setWidth(width);
-        crosshair.setHeight(height);
-        float x = (settings.getWidth() / 2f) - (width / 2f);
-        float y = (settings.getHeight() / 2f) - (height / 2f);
-        crosshair.setPosition(x, y);
-        return crosshair;
+    public Button makeButton(String text, AssetManager assetManager, AppSettings settings) {
+        Button button = new Button("Delete", new ElementId("danger.button"), "my_custom_style");
+        button.setLocalTranslation(settings.getWidth() / 2f, settings.getHeight() / 2f, 0f);
+        return button;
     }
 }
