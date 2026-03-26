@@ -36,24 +36,24 @@ public class ACScapstone extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        // Making a geometry object . .
         Geometry geom1 = new Geometry("Sphere", new Sphere(35,35,1f));
-        Vector3f v1 = new Vector3f(0f, 0f, -1f);
-        geom1.rotateUpTo(v1);
+        // Because they are sideways for some reason
+        geom1.rotateUpTo(new Vector3f(0f, 0f, -1f));
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
         mat.setTexture("ColorMap", tex);
         geom1.setMaterial(mat);
 
+        initKeys(); // Custom Controls
 
-        initKeys();
-        flyCam.setDragToRotate(true);
+        flyCam.setDragToRotate(true); // So that you're not tabbed into the game with your mouse
 
-        rootNode.attachChild(geom1);
+        rootNode.attachChild(geom1); // Actually add the geometry object (3D shape)
 
-        GuiGlobals.initialize(this);
-
-        initCrosshair();
+        GuiGlobals.initialize(this); // Initialize the UI
+        guiNode.attachChild(uiHelper.makeCrosshair(assetManager, settings)); // Call UiHelper to make the crosshair
     }
 
     private void initKeys() {
@@ -64,6 +64,7 @@ public class ACScapstone extends SimpleApplication {
         inputManager.addListener(analogListener, "Left", "Right", "Up", "Down");
     }
 
+    // Listener for custom controls
     private final AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
@@ -93,8 +94,4 @@ public class ACScapstone extends SimpleApplication {
             cam.setLocation(camRotationHelper.generatePosition());
         }
     };
-
-    private void initCrosshair() {
-        guiNode.attachChild(uiHelper.makeCrosshair(assetManager, settings));
-    }
 }
