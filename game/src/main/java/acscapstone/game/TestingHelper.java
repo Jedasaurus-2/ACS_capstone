@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class TestingHelper {
     public Vector3f[] values;
 
+    // Make a bunch of spheres at various locations
     public TestingHelper() {
         values = new Vector3f[72];
         for (int x = 0; x < 72; x++) {
@@ -21,11 +22,8 @@ public class TestingHelper {
         System.out.println(Arrays.toString(values));
     }
 
-    public void loadSpheres(Node node, AssetManager assetManager) {
-
-        Texture tex = assetManager.loadTexture("Textures/man.jpg");
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-
+    // Iterates and makes spheres so I can visualize what I am seeing
+    public void loadSpheres(Node node, Material mat) {
         for (Vector3f v : values) {
             Geometry geom2 = new Geometry("Sphere", new Sphere(35, 35, 1f));
             geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));

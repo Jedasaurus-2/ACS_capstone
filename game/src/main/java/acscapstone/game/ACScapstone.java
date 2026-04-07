@@ -49,10 +49,13 @@ public class ACScapstone extends SimpleApplication {
         //rootNode.attachChild(geom1); // Actually add the geometry object (3D shape)
 
         attachUI(); // Attach all the UI stuffs
+
+        // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
-        x.loadSpheres(rootNode, assetManager);
+        x.loadSpheres(rootNode, mat);
     }
 
+    // Add controls for the camera
     private void initKeys() {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));

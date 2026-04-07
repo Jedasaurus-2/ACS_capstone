@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 public class CamRotationHelper {
     public float hAngle = 0f;
     public float vAngle = 90f;
-    public float distance = 10f;
+    public float distance = 100f;
     public final float hLimit;
     public final float vLimit;
 
@@ -16,11 +16,13 @@ public class CamRotationHelper {
     }
 
     // Logic is handled here instead of in the other class
+    // Its modded so that is doesn't overflow
     public void incrementHAngle(float increment) {
         hAngle += increment;
         hAngle %= 360;
     }
 
+    // Restraints must be put on so that the camera doesn't end up upside down
     public void incrementVAngle(float increment) {
         if (increment < 0) { // Is this up or down
             if (!(vAngle + increment < 1)) { // Is it within bounds
