@@ -49,14 +49,8 @@ public class ACScapstone extends SimpleApplication {
         //rootNode.attachChild(geom1); // Actually add the geometry object (3D shape)
 
         attachUI(); // Attach all the UI stuffs
-        Vector3f[] x = new TestingHelper().values;
-        for (Vector3f v : x) {
-            Geometry geom2 = new Geometry("Sphere", new Sphere(35, 35, 1f));
-            geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));
-            geom2.setMaterial(mat);
-            geom2.setLocalTranslation(v);
-            rootNode.attachChild(geom2);
-        }
+        TestingHelper x = new TestingHelper();
+        x.loadSpheres(rootNode, assetManager);
     }
 
     private void initKeys() {
