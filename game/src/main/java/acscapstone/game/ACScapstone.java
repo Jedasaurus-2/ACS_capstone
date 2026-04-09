@@ -33,9 +33,6 @@ public class ACScapstone extends SimpleApplication {
     // Handles the camera's movement, somewhat
     public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
 
-    // For the mesh
-    public Vector3f[] vertices;
-
     // Actually runs everything
     @Override
     public void simpleInitApp() {
@@ -58,19 +55,33 @@ public class ACScapstone extends SimpleApplication {
         LimitsUI limitsUI = new LimitsUI();
         limitsUI.instantiateSlider(guiNode);
 
-        /*
+
+/*
+        // For the mesh
+        Vector3f[] vertices = new Vector3f[x.values.size()];
+        short[] indices = new  short[x.values.size() * 3];
+
         // Set the values inside vertices
-        vertices = new Vector3f[x.values.size()];
         for (int i = 0; i < vertices.length; i++) {
             vertices[i] = x.values.get(i);
+            indices[i * 3] = (short)x.values.get(i).x;
+            indices[i * 3 + 1] = (short)x.values.get(i).y;
+            indices[i * 3 + 2] = (short)x.values.get(i).z;
         }
+
         Mesh mesh = new Mesh();
         mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
+        mesh.setBuffer(VertexBuffer.Type.Index, 1, BufferUtils.createShortBuffer(indices));
         mesh.updateBound();
+
+        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat2.setColor("Color", ColorRGBA.Blue);
+
         Geometry geometry = new Geometry("mesh1", mesh);
         geometry.setMaterial(mat);
+
         rootNode.attachChild(geometry);
-        */
+ */
     }
 
     // Add controls for the camera
