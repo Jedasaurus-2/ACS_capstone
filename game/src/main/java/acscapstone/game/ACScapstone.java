@@ -27,6 +27,7 @@ public class ACScapstone extends SimpleApplication {
     }
     public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
     @Override
+
     public void simpleInitApp() {
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");

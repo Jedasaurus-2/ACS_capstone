@@ -17,6 +17,7 @@ public class LimitsUI {
         float offset = 100f;
         for (Slider x : limits) {
             BaseStyles.loadGlassStyle();
+
             x = new Slider("glass");
             x.getModel().setMinimum(0);
             x.getModel().setMaximum(100);
