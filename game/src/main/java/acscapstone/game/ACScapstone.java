@@ -4,11 +4,16 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer;
 import com.jme3.texture.Texture;
+import com.jme3.util.BufferUtils;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
 
@@ -53,10 +58,19 @@ public class ACScapstone extends SimpleApplication {
         LimitsUI limitsUI = new LimitsUI();
         limitsUI.instantiateSlider(guiNode);
 
+        /*
+        // Set the values inside vertices
         vertices = new Vector3f[x.values.size()];
         for (int i = 0; i < vertices.length; i++) {
             vertices[i] = x.values.get(i);
         }
+        Mesh mesh = new Mesh();
+        mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
+        mesh.updateBound();
+        Geometry geometry = new Geometry("mesh1", mesh);
+        geometry.setMaterial(mat);
+        rootNode.attachChild(geometry);
+        */
     }
 
     // Add controls for the camera
