@@ -6,10 +6,8 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.scene.shape.Sphere;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
@@ -27,32 +25,26 @@ public class ACScapstone extends SimpleApplication {
     public ACScapstone(AppState... initialStates) {
         super(initialStates);
     }
-    private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
-    private final UIHelper uiHelper = new UIHelper();
-
+    public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
     @Override
     public void simpleInitApp() {
-        // Making a geometry object . .
-        Geometry geom1 = new Geometry("Sphere", new Sphere(35,35,1f));
-        // Because they are sideways for some reason
-        geom1.rotateUpTo(new Vector3f(0f, 0f, -1f));
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
         mat.setTexture("ColorMap", tex);
-        geom1.setMaterial(mat);
 
         initKeys(); // Custom Controls
 
         flyCam.setDragToRotate(true); // So that you're not tabbed into the game with your mouse
-
-        //rootNode.attachChild(geom1); // Actually add the geometry object (3D shape)
 
         attachUI(); // Attach all the UI stuffs
 
         // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
         x.loadSpheres(rootNode, mat);
+
+        LimitsUI limitsUI = new LimitsUI();
+        limitsUI.instantiateSlider(guiNode);
     }
 
     // Add controls for the camera
@@ -98,6 +90,6 @@ public class ACScapstone extends SimpleApplication {
     public void attachUI(){
         GuiGlobals.initialize(this); // Initialize the UI
         BaseStyles.loadStyleResources("Styles/test-style-1.groovy");
-        guiNode.attachChild(uiHelper.makeButton("Hallo", assetManager, settings)); // Makes a button
+        guiNode.attachChild(new UIHelper().makeButton("Hallo", assetManager, settings)); // Makes a button
     }
 }
