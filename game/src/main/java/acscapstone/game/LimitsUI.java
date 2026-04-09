@@ -16,13 +16,17 @@ public class LimitsUI {
     public void instantiateSlider(Node node) {
         float offset = 100f;
         for (Slider x : limits) {
+            // Load a UI
             BaseStyles.loadGlassStyle();
 
             x = new Slider("glass");
+            // Value range
             x.getModel().setMinimum(0);
             x.getModel().setMaximum(100);
+
             x.setPreferredSize(new Vector3f(250f, 25f, 0f));
             x.getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0f));
+            // Set the position
             x.getLocalTranslation().set(250f, offset, 0f);
             node.attachChild(x);
             offset += 100f;

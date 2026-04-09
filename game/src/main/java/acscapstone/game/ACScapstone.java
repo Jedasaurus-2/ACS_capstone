@@ -25,9 +25,14 @@ public class ACScapstone extends SimpleApplication {
     public ACScapstone(AppState... initialStates) {
         super(initialStates);
     }
+    // Handles the camera's movement, somewhat
     public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
-    @Override
 
+    // For the mesh
+    public Vector3f[] vertices;
+
+    // Actually runs everything
+    @Override
     public void simpleInitApp() {
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -44,8 +49,14 @@ public class ACScapstone extends SimpleApplication {
         TestingHelper x = new TestingHelper();
         x.loadSpheres(rootNode, mat);
 
+        // The sliders controlling what gets rendered
         LimitsUI limitsUI = new LimitsUI();
         limitsUI.instantiateSlider(guiNode);
+
+        vertices = new Vector3f[x.values.size()];
+        for (int i = 0; i < vertices.length; i++) {
+            vertices[i] = x.values.get(i);
+        }
     }
 
     // Add controls for the camera
