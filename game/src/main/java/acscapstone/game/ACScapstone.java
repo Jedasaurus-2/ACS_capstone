@@ -44,7 +44,11 @@ public class ACScapstone extends SimpleApplication {
         // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
         x.loadSpheres(rootNode, mat);
-/*
+
+        reshape(cam.getWidth(), cam.getHeight());
+
+        /*
+
         // For the mesh
         Vector3f[] vertices = new Vector3f[x.values.size()];
         short[] indices = new  short[x.values.size() * 3];
@@ -106,7 +110,13 @@ public class ACScapstone extends SimpleApplication {
         }
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         cam.setLocation(camRotationHelper.generatePosition());
+
+        getLimits();
     };
+
+    private void getLimits(){
+
+    }
 
     private void attachUI() {
         GuiGlobals.initialize(this); // Initialize the UI

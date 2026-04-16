@@ -11,12 +11,15 @@ public class LimitsUI {
     public Slider[] upperLimits =  new Slider[3];
     public Slider[] lowerlimits =  new Slider[3];
     public Checkbox[] applyButtons = new Checkbox[3];
+    public Label[] xSliderLabels = new Label[2];
+    public Label[] ySliderLabels = new Label[2];
+    public Label[] zSliderLabels = new Label[2];
 
-    public LimitsUI() {
-    }
+    public LimitsUI() {}
 
     public void attachUI(Node guiNode, Camera cam) {
-        final String[] text = {"Apply X?","Apply Y?","Apply Z?"};
+        final String[] textForButtons = {"Apply X?","Apply Y?","Apply Z?"};
+        final String[] textForLabels = {"Upper: ","Lower: "};
         BaseStyles.loadGlassStyle();
         float windowWidth = cam.getWidth();
         float windowHeight = cam.getHeight();
@@ -37,9 +40,18 @@ public class LimitsUI {
             lowerlimits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
             guiNode.attachChild(lowerlimits[x]);
 
-            applyButtons[x] = new Checkbox(text[x], "glass");
+            applyButtons[x] = new Checkbox(textForButtons[x], "glass");
             applyButtons[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
             guiNode.attachChild(applyButtons[x]);
+
+            if (x < 2) {
+                xSliderLabels[x] = new Label(textForLabels[x], "glass");
+                guiNode.attachChild(xSliderLabels[x]);
+                ySliderLabels[x] = new Label(textForLabels[x], "glass");
+                guiNode.attachChild(ySliderLabels[x]);
+                zSliderLabels[x] = new Label(textForLabels[x], "glass");
+                guiNode.attachChild(zSliderLabels[x]);
+            }
         }
     }
 
@@ -47,19 +59,28 @@ public class LimitsUI {
         for (int x = 0; x < 3; x++) {
             if (upperLimits[x] != null)
                 upperLimits[x].setLocalTranslation(
-                        w * 0.33f - upperLimits[x].getPreferredSize().x / 2,
-                        h * (x + 1) * 0.1f  - upperLimits[x].getPreferredSize().y / 2,
+                        0f,
+                        h * (x + 1) * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f + 25,
                         0f);
             if (lowerlimits[x] != null)
                 lowerlimits[x].setLocalTranslation(
-                        w * 0.67f - lowerlimits[x].getPreferredSize().x / 2,
-                        h * (x + 1) * 0.1f  - lowerlimits[x].getPreferredSize().y / 2,
+                        0f,
+                        h * (x + 1) * 0.1f - lowerlimits[x].getPreferredSize().y * 0.5f,
                         0f);
             if (applyButtons[x] != null)
                 applyButtons[x].setLocalTranslation(
-                        w * 0.5f - applyButtons.length * 0.5f,
-                        h * (x + 3) * 0.1f,
-                         0f);
+                        0f,
+                        h * (x + 1) * 0.1f +  applyButtons[x].getPreferredSize().y * 0.5f + 25,
+                        0f);
+            if (x == 1 && upperLimits[x] != null) {
+                if (xSliderLabels[x] != null)
+                    xSliderLabels[x].setLocalTranslation(
+                            upperLimits[x].getPreferredSize().x,
+                        h * (x + 1) * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f + 25,
+                        0);
+                if (ySliderLabels[x] != null) ySliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.5f, 0);
+                if (zSliderLabels[x] != null) zSliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.5f, 0);
+            }
         }
     }
 }
