@@ -4,25 +4,15 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.VertexBuffer;
 import com.jme3.texture.Texture;
-import com.jme3.util.BufferUtils;
 import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.Slider;
 import com.simsilica.lemur.style.BaseStyles;
 
-/**
- * The JMonkeyEngine game entry, you should only do initializations for your game here, game logic is handled by
- * Custom states {@link com.jme3.app.state.BaseAppState}, Custom controls {@link com.jme3.scene.control.AbstractControl}
- * and your custom entities implementations of the previous.
- *
- */
 public class ACScapstone extends SimpleApplication {
 
     public ACScapstone() {
@@ -32,10 +22,15 @@ public class ACScapstone extends SimpleApplication {
     }
     // Handles the camera's movement, somewhat
     public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
+    public Slider[] limits =  new Slider[3];
 
     // Actually runs everything
     @Override
     public void simpleInitApp() {
+
+        setDisplayStatView(false);
+        setDisplayFps(false);
+
         Texture tex = assetManager.loadTexture("Textures/man.jpg");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
@@ -50,11 +45,6 @@ public class ACScapstone extends SimpleApplication {
         // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
         x.loadSpheres(rootNode, mat);
-
-        // The sliders controlling what gets rendered
-        LimitsUI limitsUI = new LimitsUI();
-        limitsUI.instantiateSlider(guiNode);
-
 
 /*
         // For the mesh
@@ -127,6 +117,31 @@ public class ACScapstone extends SimpleApplication {
     public void attachUI(){
         GuiGlobals.initialize(this); // Initialize the UI
         BaseStyles.loadStyleResources("Styles/test-style-1.groovy");
-        guiNode.attachChild(new UIHelper().makeButton("Hallo", assetManager, settings)); // Makes a button
+        //guiNode.attachChild(new UIHelper().makeButton("Hallo", assetManager, settings)); // Makes a button
+        float windowWidth = cam.getWidth();
+        float windowHeight = cam.getHeight();
+        for (Slider x : limits) {
+            // Load a UI
+            BaseStyles.loadGlassStyle();
+
+            x = new Slider("glass");
+            // Value range
+            x.getModel().setMinimum(0);
+            x.getModel().setMaximum(100);
+
+            x.setPreferredSize(new Vector3f(250f, 25f, 0f));
+            x.getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0f));
+            // Set the position
+            x.setLocalTranslation(windowWidth / 2, windowHeight / 2, 0);
+            guiNode.attachChild(x);
+        }
+    }
+
+    @Override
+    public void reshape(int w, int h) {
+        super.reshape(w, h);
+        for (Slider x : limits) {
+            if (x != null) x.setLocalTranslation(w * 0.5f, h * 0.1f, 0f);
+        }
     }
 }

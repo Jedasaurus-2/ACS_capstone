@@ -11,6 +11,7 @@ public class DesktopLauncher {
         appSettings.setTitle("Yo Big T");
         appSettings.setResizable(true);
         appSettings.setResolution(600, 600);
+        
         game.setSettings(appSettings);
         game.start();
     }
