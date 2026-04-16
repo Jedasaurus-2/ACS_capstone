@@ -10,8 +10,6 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.Slider;
-import com.simsilica.lemur.style.BaseStyles;
 
 public class ACScapstone extends SimpleApplication {
 
@@ -39,6 +37,7 @@ public class ACScapstone extends SimpleApplication {
         initKeys(); // Custom Controls
 
         flyCam.setDragToRotate(true); // So that you're not tabbed into the game with your mouse
+        flyCam.setEnabled(false);
 
         attachUI(); // Attach all the UI stuffs
 
@@ -83,34 +82,30 @@ public class ACScapstone extends SimpleApplication {
     }
 
     // Listener for custom controls
-    private final AnalogListener analogListener = new AnalogListener() {
-        @Override
-        public void onAnalog(String name, float value, float tpf) {
-            float speed = 0.5f;
-            switch (name) {
-                case "Left":
-                    camRotationHelper.incrementHAngle(speed);
-                    break;
-                case "Right":
-                     camRotationHelper.incrementHAngle(-speed);
-                    break;
-                case "Up":
-                    camRotationHelper.incrementVAngle(-speed);
-                    break;
-                case "Down":
-                    camRotationHelper.incrementVAngle(speed);
-                    break;
-                case "RotateLeft":
-                case "RotateRight":
-                    float rotateSpeed = 1f;
-                    float angle = (name.equals("RotateLeft") ? value : -value) * rotateSpeed;
-                    Quaternion q = new Quaternion().fromAngleAxis(angle, Vector3f.UNIT_Y);
-                    cam.setRotation(cam.getRotation().mult(q));
-                    break;
-            }
-            cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
-            cam.setLocation(camRotationHelper.generatePosition());
+    private final AnalogListener analogListener = (name, value, tpf) -> {
+        float speed = 0.5f;
+        switch (name) {
+            case "Left":
+                camRotationHelper.incrementHAngle(speed);
+                break;
+            case "Right":
+                 camRotationHelper.incrementHAngle(-speed);
+                break;
+            case "Up":
+                camRotationHelper.incrementVAngle(-speed);
+                break;
+            case "Down":
+                camRotationHelper.incrementVAngle(speed);
+                break;
+            case "RotateLeft":
+            case "RotateRight":
+                float angle = (name.equals("RotateLeft") ? value : -value);
+                Quaternion q = new Quaternion().fromAngleAxis(angle, Vector3f.UNIT_Y);
+                cam.setRotation(cam.getRotation().mult(q));
+                break;
         }
+        cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
+        cam.setLocation(camRotationHelper.generatePosition());
     };
 
     private void attachUI() {
