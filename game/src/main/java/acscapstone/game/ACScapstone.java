@@ -21,8 +21,8 @@ public class ACScapstone extends SimpleApplication {
         super(initialStates);
     }
     // Handles the camera's movement, somewhat
-    public CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
-    public Slider[] limits =  new Slider[3];
+    private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
+    private final LimitsUI limitsUI = new LimitsUI();
 
     // Actually runs everything
     @Override
@@ -113,31 +113,14 @@ public class ACScapstone extends SimpleApplication {
         }
     };
 
-    public void attachUI() {
+    private void attachUI() {
         GuiGlobals.initialize(this); // Initialize the UI
-        BaseStyles.loadGlassStyle();
-        float windowWidth = cam.getWidth();
-        float windowHeight = cam.getHeight();
-        for (int x = 0; x < limits.length; x++) {
-            limits[x] = new Slider("glass");
-            limits[x].getModel().setMinimum(0);
-            limits[x].getModel().setMaximum(100);
-            limits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
-            limits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
-            limits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
-            guiNode.attachChild(limits[x]);
-        }
+        limitsUI.attachUI(guiNode, cam);
     }
 
     @Override
     public void reshape(int w, int h) {
         super.reshape(w, h);
-        for (int x = 0; x < limits.length; x++) {
-            if (limits[x] != null)
-                limits[x].setLocalTranslation(
-                    w * 0.5f - limits[x].getPreferredSize().x / 2,
-                    h * (x + 1) * 0.1f  - limits[x].getPreferredSize().y / 2,
-                    0f);
-        }
+        limitsUI.reshape(w, h);
     }
 }
