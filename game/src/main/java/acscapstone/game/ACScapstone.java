@@ -132,9 +132,12 @@ public class ACScapstone extends SimpleApplication {
     @Override
     public void reshape(int w, int h) {
         super.reshape(w, h);
-        for (Slider x : limits) {
-            System.out.println(x);
-            if (x != null) x.setLocalTranslation(w * 0.5f, h * 0.1f, 0f);
+        for (int x = 0; x < limits.length; x++) {
+            if (limits[x] != null)
+                limits[x].setLocalTranslation(
+                    w * 0.5f - limits[x].getPreferredSize().x / 2,
+                    h * (x + 1) * 0.1f  - limits[x].getPreferredSize().y / 2,
+                    0f);
         }
     }
 }
