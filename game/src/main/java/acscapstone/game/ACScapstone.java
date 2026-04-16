@@ -45,7 +45,6 @@ public class ACScapstone extends SimpleApplication {
         // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
         x.loadSpheres(rootNode, mat);
-
 /*
         // For the mesh
         Vector3f[] vertices = new Vector3f[x.values.size()];
@@ -114,26 +113,19 @@ public class ACScapstone extends SimpleApplication {
         }
     };
 
-    public void attachUI(){
+    public void attachUI() {
         GuiGlobals.initialize(this); // Initialize the UI
-        BaseStyles.loadStyleResources("Styles/test-style-1.groovy");
-        //guiNode.attachChild(new UIHelper().makeButton("Hallo", assetManager, settings)); // Makes a button
+        BaseStyles.loadGlassStyle();
         float windowWidth = cam.getWidth();
         float windowHeight = cam.getHeight();
-        for (Slider x : limits) {
-            // Load a UI
-            BaseStyles.loadGlassStyle();
-
-            x = new Slider("glass");
-            // Value range
-            x.getModel().setMinimum(0);
-            x.getModel().setMaximum(100);
-
-            x.setPreferredSize(new Vector3f(250f, 25f, 0f));
-            x.getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0f));
-            // Set the position
-            x.setLocalTranslation(windowWidth / 2, windowHeight / 2, 0);
-            guiNode.attachChild(x);
+        for (int x = 0; x < limits.length; x++) {
+            limits[x] = new Slider("glass");
+            limits[x].getModel().setMinimum(0);
+            limits[x].getModel().setMaximum(100);
+            limits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
+            limits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
+            limits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
+            guiNode.attachChild(limits[x]);
         }
     }
 
@@ -141,6 +133,7 @@ public class ACScapstone extends SimpleApplication {
     public void reshape(int w, int h) {
         super.reshape(w, h);
         for (Slider x : limits) {
+            System.out.println(x);
             if (x != null) x.setLocalTranslation(w * 0.5f, h * 0.1f, 0f);
         }
     }
