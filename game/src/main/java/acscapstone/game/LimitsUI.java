@@ -106,11 +106,11 @@ public class LimitsUI {
 
     // Set the text of the labels to the sliders' values
     public void updateLabels(float[][] limits) {
-        xSliderLabels[0].setText(xSliderLabels[0].getText().substring(0,7) + limits[0][0]);
-        xSliderLabels[1].setText(xSliderLabels[1].getText().substring(0,7) + limits[0][1]);
-        ySliderLabels[0].setText(ySliderLabels[0].getText().substring(0,7) + limits[1][0]);
-        ySliderLabels[1].setText(ySliderLabels[1].getText().substring(0,7) + limits[1][1]);
-        zSliderLabels[0].setText(zSliderLabels[0].getText().substring(0,7) + limits[2][0]);
-        zSliderLabels[1].setText(zSliderLabels[1].getText().substring(0,7) + limits[2][1]);
+        xSliderLabels[0].setText(xSliderLabels[0].getText().substring(0,7) + (int) limits[0][0]);
+        xSliderLabels[1].setText(xSliderLabels[1].getText().substring(0,7) + (int) limits[0][1]);
+        ySliderLabels[0].setText(ySliderLabels[0].getText().substring(0,7) + (int) limits[1][0]);
+        ySliderLabels[1].setText(ySliderLabels[1].getText().substring(0,7) + (int) limits[1][1]);
+        zSliderLabels[0].setText(zSliderLabels[0].getText().substring(0,7) + (int) limits[2][0]);
+        zSliderLabels[1].setText(zSliderLabels[1].getText().substring(0,7) + (int) limits[2][1]);
     }
 }
