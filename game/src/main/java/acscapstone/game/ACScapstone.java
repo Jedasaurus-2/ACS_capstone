@@ -21,6 +21,8 @@ public class ACScapstone extends SimpleApplication {
     // Handles the camera's movement, somewhat
     private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
     private final LimitsUI limitsUI = new LimitsUI();
+    // x (0), y (1), and z (2) each have upper (0) and lower (1) limits
+    private float[][] limits = new float[3][2];
 
     // Actually runs everything
     @Override
@@ -46,7 +48,7 @@ public class ACScapstone extends SimpleApplication {
         x.loadSpheres(rootNode, mat);
 
         reshape(cam.getWidth(), cam.getHeight());
-
+        simpleUpdate(0f);
         /*
 
         // For the mesh
@@ -110,22 +112,41 @@ public class ACScapstone extends SimpleApplication {
         }
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         cam.setLocation(camRotationHelper.generatePosition());
-
-        getLimits();
     };
 
-    private void getLimits(){
-
-    }
-
+    // Make all of the UI
     private void attachUI() {
         GuiGlobals.initialize(this); // Initialize the UI
         limitsUI.attachUI(guiNode, cam);
     }
 
+    // Get the value of all of the sliders
+    private void getLimits(){
+        // All are on a range of 0f - 100f
+        limits[0][0] = (float) limitsUI.upperLimits[0].getModel().getValue();
+        limits[0][1] = (float) limitsUI.lowerLimits[0].getModel().getValue();
+        limits[1][0] = (float) limitsUI.upperLimits[1].getModel().getValue();
+        limits[1][1] = (float) limitsUI.lowerLimits[1].getModel().getValue();
+        limits[2][0] = (float) limitsUI.upperLimits[2].getModel().getValue();
+        limits[2][1] = (float) limitsUI.lowerLimits[2].getModel().getValue();
+    }
+
+    // Set the text on the labels
+    private void updateLabels(){
+        limitsUI.updateLabels(limits);
+    }
+
+    // Called when the window size changes
     @Override
     public void reshape(int w, int h) {
         super.reshape(w, h);
         limitsUI.reshape(w, h);
+    }
+
+    // Called like 5ish times per second
+    @Override
+    public void simpleUpdate(float tpf) {
+        getLimits();
+        updateLabels();
     }
 }
