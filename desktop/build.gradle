@@ -9,6 +9,10 @@ version '1.0.0'
 mainClassName = 'acscapstone.desktopmodule.DesktopLauncher'
 String dependenciesString = ""
 
+repositories {
+    mavenCentral()
+}
+
 application {
     if (System.getProperty("os.name").toLowerCase().contains("mac")) {
         applicationDefaultJvmArgs = ['-XstartOnFirstThread'] // this is when using a Mac as a development machine which requires the AppKit main UI thread to be used for GUI applications
@@ -20,7 +24,7 @@ dependencies {
     implementation libs.jmeDesktop
     implementation libs.jmeLwjgl3
     implementation 'org.codehaus.groovy:groovy-all:2.4.15'
-
+    implementation 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
 }
 distZip {
     //having a degenerate folder within the dist zip complicates generating the other zips
