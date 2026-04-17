@@ -14,6 +14,7 @@ public class LimitsUI {
     public Label[] xSliderLabels = new Label[2];
     public Label[] ySliderLabels = new Label[2];
     public Label[] zSliderLabels = new Label[2];
+    public Button applyButton;
 
     public LimitsUI() {}
 
@@ -22,6 +23,10 @@ public class LimitsUI {
         final String[] textForButtons = {"Apply X?","Apply Y?","Apply Z?"};
         final String[] textForLabels = {"Upper: ","Lower: "};
         BaseStyles.loadGlassStyle();
+
+        applyButton = new Button("Apply", "glass");
+        guiNode.attachChild(applyButton);
+
         float windowWidth = cam.getWidth();
         float windowHeight = cam.getHeight();
         // Because of x, y, and z limits
@@ -89,19 +94,20 @@ public class LimitsUI {
                         0f,
                         h * (x + 1) * 0.1f +  applyButtons[x].getPreferredSize().y * 0.5f + 25,
                         0f);
-            // Upper labels
-            if (x == 0 && upperLimits[x] != null && xSliderLabels[x] != null && ySliderLabels[x] != null && zSliderLabels[x] != null) {
-                xSliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f + 25, 0);
-                ySliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.2f - upperLimits[x].getPreferredSize().y * 0.5f + 25, 0);
-                zSliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.3f - upperLimits[x].getPreferredSize().y * 0.5f + 25, 0);
-            }
-            // Lower labels
-            if (x == 1 && upperLimits[x] != null && xSliderLabels[x] != null && ySliderLabels[x] != null && zSliderLabels[x] != null) {
-                xSliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f, 0);
-                ySliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.2f - upperLimits[x].getPreferredSize().y * 0.5f, 0);
-                zSliderLabels[x].setLocalTranslation(upperLimits[x].getPreferredSize().x, h * 0.3f - upperLimits[x].getPreferredSize().y * 0.5f, 0);
-            }
         }
+        // Upper labels
+        if (upperLimits[0] != null && xSliderLabels[0] != null && ySliderLabels[0] != null && zSliderLabels[0] != null) {
+            xSliderLabels[0].setLocalTranslation(upperLimits[0].getPreferredSize().x, h * 0.1f - upperLimits[0].getPreferredSize().y * 0.5f + 25, 0);
+            ySliderLabels[0].setLocalTranslation(upperLimits[0].getPreferredSize().x, h * 0.2f - upperLimits[0].getPreferredSize().y * 0.5f + 25, 0);
+            zSliderLabels[0].setLocalTranslation(upperLimits[0].getPreferredSize().x, h * 0.3f - upperLimits[0].getPreferredSize().y * 0.5f + 25, 0);
+        }
+        // Lower labels
+        if (upperLimits[1] != null && xSliderLabels[1] != null && ySliderLabels[1] != null && zSliderLabels[1] != null) {
+            xSliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.1f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
+            ySliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.2f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
+            zSliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.3f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
+        }
+        if (upperLimits[2] != null && applyButtons[2] != null) applyButton.setLocalTranslation(0,h * (2 + 1) * 0.1f + applyButtons[2].getPreferredSize().y + applyButton.getPreferredSize().y * 0.5f + 25, 0);
     }
 
     // Set the text of the labels to the sliders' values
