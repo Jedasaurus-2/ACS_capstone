@@ -9,7 +9,7 @@ import com.simsilica.lemur.style.BaseStyles;
 public class LimitsUI {
 
     public Slider[] upperLimits =  new Slider[3];
-    public Slider[] lowerlimits =  new Slider[3];
+    public Slider[] lowerLimits =  new Slider[3];
     public Checkbox[] applyButtons = new Checkbox[3];
     public Label[] xSliderLabels = new Label[2];
     public Label[] ySliderLabels = new Label[2];
@@ -41,13 +41,13 @@ public class LimitsUI {
             guiNode.attachChild(upperLimits[x]);
 
             // Same thing again
-            lowerlimits[x] = new Slider("glass");
-            lowerlimits[x].getModel().setMinimum(0);
-            lowerlimits[x].getModel().setMaximum(100);
-            lowerlimits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
-            lowerlimits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
-            lowerlimits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
-            guiNode.attachChild(lowerlimits[x]);
+            lowerLimits[x] = new Slider("glass");
+            lowerLimits[x].getModel().setMinimum(0);
+            lowerLimits[x].getModel().setMaximum(100);
+            lowerLimits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
+            lowerLimits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
+            lowerLimits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
+            guiNode.attachChild(lowerLimits[x]);
 
             // Checkmark boxes
             applyButtons[x] = new Checkbox(textForButtons[x], "glass");
@@ -79,11 +79,12 @@ public class LimitsUI {
                         h * (x + 1) * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f + 25,
                         0f);
             // Also bottom left corner. Offset by x
-            if (lowerlimits[x] != null)
-                lowerlimits[x].setLocalTranslation(
+            if (lowerLimits[x] != null)
+                lowerLimits[x].setLocalTranslation(
                         0f,
-                        h * (x + 1) * 0.1f - lowerlimits[x].getPreferredSize().y * 0.5f,
+                        h * (x + 1) * 0.1f - lowerLimits[x].getPreferredSize().y * 0.5f,
                         0f);
+            // Right above the upper slider for x, y, and z
             if (applyButtons[x] != null)
                 applyButtons[x].setLocalTranslation(
                         0f,
