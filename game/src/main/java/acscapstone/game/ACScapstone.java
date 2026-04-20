@@ -148,5 +148,6 @@ public class ACScapstone extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         getLimits();
         updateLabels();
+
     }
 }

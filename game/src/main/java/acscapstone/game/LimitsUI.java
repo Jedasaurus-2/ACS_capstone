@@ -39,10 +39,6 @@ public class LimitsUI {
             upperLimits[x].getModel().setMaximum(100);
             // Set how the slider it
             upperLimits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
-            // Set the grabby thing's size
-            upperLimits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
-            // Default position, won't ever be seen
-            upperLimits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
             guiNode.attachChild(upperLimits[x]);
 
             // Same thing again
@@ -50,8 +46,6 @@ public class LimitsUI {
             lowerLimits[x].getModel().setMinimum(0);
             lowerLimits[x].getModel().setMaximum(100);
             lowerLimits[x].setPreferredSize(new Vector3f(250f, 25f, 0f));
-            lowerLimits[x].getThumbButton().setPreferredSize(new Vector3f(25f, 25f, 0));
-            lowerLimits[x].setLocalTranslation(windowWidth * 0.5f, windowHeight * 0.5f, 0);
             guiNode.attachChild(lowerLimits[x]);
 
             // Checkmark boxes
@@ -77,23 +71,28 @@ public class LimitsUI {
     public void reshape(int w, int h) {
         for (int x = 0; x < 3; x++) {
             // Bottom left corner. Offset by x and 25 (about the height of a slider)
-            if (upperLimits[x] != null)
+            if (upperLimits[x] != null) {
                 upperLimits[x].setLocalTranslation(
                         0f,
                         h * (x + 1) * 0.1f - upperLimits[x].getPreferredSize().y * 0.5f + 25,
                         0f);
+                upperLimits[x].getModel().setValue(100d);
+            }
             // Also bottom left corner. Offset by x
-            if (lowerLimits[x] != null)
+            if (lowerLimits[x] != null) {
                 lowerLimits[x].setLocalTranslation(
                         0f,
                         h * (x + 1) * 0.1f - lowerLimits[x].getPreferredSize().y * 0.5f,
                         0f);
+                lowerLimits[x].getModel().setValue(0d);
+            }
             // Right above the upper slider for x, y, and z
-            if (applyButtons[x] != null)
+            if (applyButtons[x] != null) {
                 applyButtons[x].setLocalTranslation(
                         0f,
-                        h * (x + 1) * 0.1f +  applyButtons[x].getPreferredSize().y * 0.5f + 25,
+                        h * (x + 1) * 0.1f + applyButtons[x].getPreferredSize().y * 0.5f + 25,
                         0f);
+            }
         }
         // Upper labels
         if (upperLimits[0] != null && xSliderLabels[0] != null && ySliderLabels[0] != null && zSliderLabels[0] != null) {
@@ -118,5 +117,17 @@ public class LimitsUI {
         ySliderLabels[1].setText(ySliderLabels[1].getText().substring(0,7) + (int) limits[1][1]);
         zSliderLabels[0].setText(zSliderLabels[0].getText().substring(0,7) + (int) limits[2][0]);
         zSliderLabels[1].setText(zSliderLabels[1].getText().substring(0,7) + (int) limits[2][1]);
+    }
+
+    // Are the upper sliders/lower sliders below/above each other when they should not be?
+    public void checkLimits(float[][] limits){
+
+    }
+
+    public float[][] getLimits(){
+        float[][] limits = new float[3][3];
+        limits[0][0] = (float) upperLimits[0].getModel().getValue();
+        limits[0][1] = (float) lowerLimits[0].getModel().getValue();
+        return limits;
     }
 }
