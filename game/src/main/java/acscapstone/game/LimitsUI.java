@@ -124,10 +124,15 @@ public class LimitsUI {
 
     }
 
+    // Return the current slider values as a 2D array
     public float[][] getLimits(){
         float[][] limits = new float[3][3];
         limits[0][0] = (float) upperLimits[0].getModel().getValue();
         limits[0][1] = (float) lowerLimits[0].getModel().getValue();
+        limits[1][0] = (float) upperLimits[1].getModel().getValue();
+        limits[1][1] = (float) lowerLimits[1].getModel().getValue();
+        limits[2][0] = (float) upperLimits[2].getModel().getValue();
+        limits[2][1] = (float) lowerLimits[2].getModel().getValue();
         return limits;
     }
 }

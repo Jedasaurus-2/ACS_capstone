@@ -8,7 +8,7 @@ dependencies {
     runtimeOnly libs.jmeJogg
     runtimeOnly libs.jmePlugins
 
-    
+    implementation 'com.fazecast:jSerialComm:2.11.4'
     
 
 

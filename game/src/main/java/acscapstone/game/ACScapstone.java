@@ -1,5 +1,6 @@
 package acscapstone.game;
 
+import com.fazecast.jSerialComm.SerialPort;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -10,8 +11,12 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
+import com.fazecast.*;
+
+import java.util.Scanner;
 
 public class ACScapstone extends SimpleApplication {
+
 
     public ACScapstone() {
     }
@@ -27,6 +32,13 @@ public class ACScapstone extends SimpleApplication {
     // Actually runs everything
     @Override
     public void simpleInitApp() {
+
+        // Read the USB
+        SerialPort comPort = SerialPort.getCommPort("COM3");
+        comPort.setBaudRate(115200);
+        comPort.openPort();
+        comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1000, 0);
+        Scanner in = new Scanner(comPort.getInputStream());
 
         setDisplayStatView(false);
         setDisplayFps(false);
@@ -123,12 +135,7 @@ public class ACScapstone extends SimpleApplication {
     // Get the value of all of the sliders
     private void getLimits(){
         // All are on a range of 0f - 100f
-        limits[0][0] = (float) limitsUI.upperLimits[0].getModel().getValue();
-        limits[0][1] = (float) limitsUI.lowerLimits[0].getModel().getValue();
-        limits[1][0] = (float) limitsUI.upperLimits[1].getModel().getValue();
-        limits[1][1] = (float) limitsUI.lowerLimits[1].getModel().getValue();
-        limits[2][0] = (float) limitsUI.upperLimits[2].getModel().getValue();
-        limits[2][1] = (float) limitsUI.lowerLimits[2].getModel().getValue();
+        limits = limitsUI.getLimits();
     }
 
     // Set the text on the labels
