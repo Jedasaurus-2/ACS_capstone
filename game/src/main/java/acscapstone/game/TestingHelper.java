@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestingHelper {
+
     public ArrayList<Vector3f> values = new ArrayList<>();
 
     // Make a bunch of spheres at various locations

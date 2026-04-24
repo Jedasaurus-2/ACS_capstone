@@ -11,12 +11,13 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
-import com.fazecast.*;
+import com.fazecast.jSerialComm.SerialPort;
 
+import java.io.*;
+import java.nio.Buffer;
 import java.util.Scanner;
 
 public class ACScapstone extends SimpleApplication {
-
 
     public ACScapstone() {
     }
@@ -28,18 +29,31 @@ public class ACScapstone extends SimpleApplication {
     private final LimitsUI limitsUI = new LimitsUI();
     // x (0), y (1), and z (2) each have upper (0) and lower (1) limits
     private float[][] limits = new float[3][2];
+    private Scanner in;
+    private FileWriter writer;
+    private int counter = 0;
 
     // Actually runs everything
     @Override
     public void simpleInitApp() {
+
+        try {
+            File file = new File("units.txt");
+            System.out.println(file.getAbsolutePath());
+            writer = new FileWriter(file);
+            //writer = new PrintWriter(new FileWriter(file, true), true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
 
         // Read the USB
         SerialPort comPort = SerialPort.getCommPort("COM3");
         comPort.setBaudRate(115200);
         comPort.openPort();
         comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1000, 0);
-        Scanner in = new Scanner(comPort.getInputStream());
+        in = new Scanner(comPort.getInputStream());
 
+        // Remove the bottom left debug panel
         setDisplayStatView(false);
         setDisplayFps(false);
 
@@ -61,33 +75,6 @@ public class ACScapstone extends SimpleApplication {
 
         reshape(cam.getWidth(), cam.getHeight());
         simpleUpdate(0f);
-        /*
-
-        // For the mesh
-        Vector3f[] vertices = new Vector3f[x.values.size()];
-        short[] indices = new  short[x.values.size() * 3];
-
-        // Set the values inside vertices
-        for (int i = 0; i < vertices.length; i++) {
-            vertices[i] = x.values.get(i);
-            indices[i * 3] = (short)x.values.get(i).x;
-            indices[i * 3 + 1] = (short)x.values.get(i).y;
-            indices[i * 3 + 2] = (short)x.values.get(i).z;
-        }
-
-        Mesh mesh = new Mesh();
-        mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-        mesh.setBuffer(VertexBuffer.Type.Index, 1, BufferUtils.createShortBuffer(indices));
-        mesh.updateBound();
-
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat2.setColor("Color", ColorRGBA.Blue);
-
-        Geometry geometry = new Geometry("mesh1", mesh);
-        geometry.setMaterial(mat);
-
-        rootNode.attachChild(geometry);
- */
     }
 
     // Add controls for the camera
@@ -155,6 +142,25 @@ public class ACScapstone extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         getLimits();
         updateLabels();
-
+        if (in.hasNext()) {
+            counter++;
+            String data = in.next();
+            //System.out.println(data);
+            try {
+                //System.out.println(data);
+                //writer.println("data");
+                writer.write(data);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (counter > 1000){
+            try {
+                writer.close();
+                System.out.println(counter);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
