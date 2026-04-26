@@ -30,27 +30,28 @@ public class ACScapstone extends SimpleApplication {
     // x (0), y (1), and z (2) each have upper (0) and lower (1) limits
     private float[][] limits = new float[3][2];
     private Scanner in;
-    private FileWriter writer;
-    private int counter = 0;
+    private PrintWriter writer;
+    private final SerialPort comPort = SerialPort.getCommPort("COM3");
+    private DataHelper dataHelper = new DataHelper();
 
     // Actually runs everything
     @Override
     public void simpleInitApp() {
-
+        //
         try {
             File file = new File("units.txt");
-            System.out.println(file.getAbsolutePath());
-            writer = new FileWriter(file);
-            //writer = new PrintWriter(new FileWriter(file, true), true);
+            //writer = new FileWriter(file);
+            writer = new PrintWriter(new FileWriter(file, true), true);
+            writer.println("");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
         // Read the USB
-        SerialPort comPort = SerialPort.getCommPort("COM3");
         comPort.setBaudRate(115200);
         comPort.openPort();
         comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1000, 0);
+
         in = new Scanner(comPort.getInputStream());
 
         // Remove the bottom left debug panel
@@ -69,9 +70,14 @@ public class ACScapstone extends SimpleApplication {
 
         attachUI(); // Attach all the UI stuffs
 
+        // Load data from the units file
+        dataHelper.generateData();
+
         // Generate a bunch of spheres so I can see what is actually happening easier
         TestingHelper x = new TestingHelper();
+        x.loadValues(dataHelper.data);
         x.loadSpheres(rootNode, mat);
+
 
         reshape(cam.getWidth(), cam.getHeight());
         simpleUpdate(0f);
@@ -137,28 +143,19 @@ public class ACScapstone extends SimpleApplication {
         limitsUI.reshape(w, h);
     }
 
-    // Called like 5ish times per second
+    // Called like 10ish times per second
     @Override
-    public void simpleUpdate(float tpf) {
+    public void simpleUpdate(float tpf)  {
         getLimits();
         updateLabels();
+
         if (in.hasNext()) {
-            counter++;
+            //System.out.println("got data");
             String data = in.next();
-            //System.out.println(data);
+            System.out.println(data);
             try {
-                //System.out.println(data);
-                //writer.println("data");
-                writer.write(data);
+                writer.print(data);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        if (counter > 1000){
-            try {
-                writer.close();
-                System.out.println(counter);
-            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }

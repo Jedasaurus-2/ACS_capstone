@@ -9,6 +9,7 @@ import com.jme3.scene.shape.Sphere;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class TestingHelper {
 
@@ -29,16 +30,53 @@ public class TestingHelper {
         }
     }
 
+    private Vector3f convertToSpherical(int x, int y, int d) {
+        final float converter = 2f * 3.14159265359f / 360f; // From degrees to radians
+        Vector3f pos = new Vector3f();
+        pos.x = (float) (Math.sin(converter * (y - 90f)) * Math.cos(converter * x) * d); // Multivariate formula
+        pos.z = (float) (Math.sin(converter * (y - 90f)) * Math.sin(converter * x) * d);
+        pos.y = (float) Math.cos(converter * (y - 90f)) * d;
+        return pos;
+    }
+
+    private Vector3f convertToSpherical(int x, int y, String d2) {
+        int d = Integer.parseInt(d2);
+        final float converter = 2f * 3.14159265359f / 360f; // From degrees to radians
+        Vector3f pos = new Vector3f();
+        pos.x = (float) (Math.sin(converter * (y - 90f)) * Math.cos(converter * x) * d); // Multivariate formula
+        pos.z = (float) (Math.sin(converter * (y - 90f)) * Math.sin(converter * x) * d);
+        pos.y = (float) Math.cos(converter * (y - 90f)) * d;
+        return pos;
+    }
+
     // Iterates and makes spheres so I can visualize what I am seeing
     public void loadSpheres(Node node, Material mat) {
         for (Vector3f v : values) {
             Geometry geom2 = new Geometry("Sphere", new Sphere(35, 35, 1f));
             geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));
             geom2.setMaterial(mat);
-            geom2.setLocalTranslation(v);
+            geom2.setLocalTranslation(v); // Set position
 
             node.attachChild(geom2);
         }
     }
 
+    public void loadValues(HashMap<int[], String> data) {
+        this.values = new ArrayList<>();
+        for (int x = 6; x <= 180; x += 6) {
+            for (int y = 0; y <= 168; y += 6) {
+                for (int[] key : data.keySet()) {
+                    if (key[0] == x && key[1] == y) {
+                        values.add(convertToSpherical(x, y, data.get(key)));
+                    }
+                }
+                if (data.containsKey(new int[]{x, y})) {
+                    values.add(convertToSpherical(x, y, data.get(new int[]{x,y})));
+                } else {
+                    values.add(new Vector3f(999999999f, 999999999f, 999999999f));
+                }
+            }
+        }
+        System.out.println(values);
+    }
 }
