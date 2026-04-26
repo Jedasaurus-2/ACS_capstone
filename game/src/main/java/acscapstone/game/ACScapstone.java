@@ -140,7 +140,7 @@ public class ACScapstone extends SimpleApplication {
     // Called like 10ish times per second
     @Override
     public void simpleUpdate(float tpf)  {
-        //getLimits();
+        getLimits();
         updateLabels();
 
         if (in.hasNext()) {
@@ -153,11 +153,10 @@ public class ACScapstone extends SimpleApplication {
                 System.out.println(e.getMessage());
             }
         }
-        /*
+
         if (limitsUI.applyButton.isPressed()) {
             limitsUI.checkLimits();
             x.loadSpheres(rootNode, assetManager, limitsUI);
         }
-        */
     }
 }

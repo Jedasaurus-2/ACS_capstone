@@ -142,12 +142,12 @@ public class LimitsUI {
     }
 
     public boolean inRange(Vector3f pos) {
-        int magnitude = 10;
+        int magnitude = 1;
         if (applyButtons[0].isChecked()) {
-            if (pos.x > magnitude * upperLimits[0].getModel().getValue()) {
+            if (pos.x > magnitude * upperLimits[2].getModel().getValue()) {
                 return false;
             }
-            if (pos.x < magnitude * (lowerLimits[0].getModel().getValue() - 100)) {
+            if (pos.x < magnitude * (lowerLimits[2].getModel().getValue() - 100)) {
                 return false;
             }
         }
@@ -160,10 +160,10 @@ public class LimitsUI {
             }
         }
         if (applyButtons[2].isChecked()) {
-            if (pos.z > magnitude * upperLimits[2].getModel().getValue()) {
+            if (pos.z > magnitude * upperLimits[0].getModel().getValue()) {
                 return false;
             }
-            if (pos.z < magnitude * (lowerLimits[2].getModel().getValue() - 100)) {
+            if (pos.z < magnitude * (lowerLimits[0].getModel().getValue() - 100)) {
                 return false;
             }
         }
