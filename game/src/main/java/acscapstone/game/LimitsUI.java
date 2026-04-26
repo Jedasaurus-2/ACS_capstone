@@ -120,13 +120,18 @@ public class LimitsUI {
     }
 
     // Are the upper sliders/lower sliders below/above each other when they should not be?
-    public void checkLimits(float[][] limits){
-
+    public void checkLimits() {
+        float[][] limits = getLimits();
+        for (int i = 0; i < 3; i++) {
+            if (limits[i][0] < limits[i][1]) {
+                lowerLimits[i].getModel().setValue(limits[i][0]);
+            }
+        }
     }
 
     // Return the current slider values as a 2D array
     public float[][] getLimits(){
-        float[][] limits = new float[3][3];
+        float[][] limits = new float[3][2];
         limits[0][0] = (float) upperLimits[0].getModel().getValue();
         limits[0][1] = (float) lowerLimits[0].getModel().getValue();
         limits[1][0] = (float) upperLimits[1].getModel().getValue();
@@ -134,5 +139,34 @@ public class LimitsUI {
         limits[2][0] = (float) upperLimits[2].getModel().getValue();
         limits[2][1] = (float) lowerLimits[2].getModel().getValue();
         return limits;
+    }
+
+    public boolean inRange(Vector3f pos) {
+        int magnitude = 10;
+        if (applyButtons[0].isChecked()) {
+            if (pos.x > magnitude * upperLimits[0].getModel().getValue()) {
+                return false;
+            }
+            if (pos.x < magnitude * (lowerLimits[0].getModel().getValue() - 100)) {
+                return false;
+            }
+        }
+        if (applyButtons[1].isChecked()) {
+            if (pos.y > magnitude * upperLimits[1].getModel().getValue()) {
+                return false;
+            }
+            if (pos.y < magnitude * (lowerLimits[1].getModel().getValue() - 100)) {
+                return false;
+            }
+        }
+        if (applyButtons[2].isChecked()) {
+            if (pos.z > magnitude * upperLimits[2].getModel().getValue()) {
+                return false;
+            }
+            if (pos.z < magnitude * (lowerLimits[2].getModel().getValue() - 100)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -5,16 +5,15 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
-import com.fazecast.jSerialComm.SerialPort;
 
 import java.io.*;
-import java.nio.Buffer;
 import java.util.Scanner;
 
 public class ACScapstone extends SimpleApplication {
@@ -33,6 +32,7 @@ public class ACScapstone extends SimpleApplication {
     private PrintWriter writer;
     private final SerialPort comPort = SerialPort.getCommPort("COM3");
     private DataHelper dataHelper = new DataHelper();
+    private RenderingHelper x = new RenderingHelper();
 
     // Actually runs everything
     @Override
@@ -58,11 +58,6 @@ public class ACScapstone extends SimpleApplication {
         setDisplayStatView(false);
         setDisplayFps(false);
 
-        Texture tex = assetManager.loadTexture("Textures/man.jpg");
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-
-        mat.setTexture("ColorMap", tex);
-
         initKeys(); // Custom Controls
 
         flyCam.setDragToRotate(true); // So that you're not tabbed into the game with your mouse
@@ -74,9 +69,8 @@ public class ACScapstone extends SimpleApplication {
         dataHelper.generateData();
 
         // Generate a bunch of spheres so I can see what is actually happening easier
-        TestingHelper x = new TestingHelper();
         x.loadValues(dataHelper.data);
-        x.loadSpheres(rootNode, mat);
+        x.loadSpheres(rootNode, assetManager, limitsUI);
 
 
         reshape(cam.getWidth(), cam.getHeight());
@@ -146,7 +140,7 @@ public class ACScapstone extends SimpleApplication {
     // Called like 10ish times per second
     @Override
     public void simpleUpdate(float tpf)  {
-        getLimits();
+        //getLimits();
         updateLabels();
 
         if (in.hasNext()) {
@@ -159,5 +153,11 @@ public class ACScapstone extends SimpleApplication {
                 System.out.println(e.getMessage());
             }
         }
+        /*
+        if (limitsUI.applyButton.isPressed()) {
+            limitsUI.checkLimits();
+            x.loadSpheres(rootNode, assetManager, limitsUI);
+        }
+        */
     }
 }

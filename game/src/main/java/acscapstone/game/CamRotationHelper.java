@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 public class CamRotationHelper {
     public float hAngle = 0f;
     public float vAngle = 90f;
-    public float distance = 100f;
+    public float distance = 750f;
     public final float hLimit;
     public final float vLimit;
 
