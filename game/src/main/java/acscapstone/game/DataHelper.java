@@ -1,11 +1,11 @@
 package acscapstone.game;
 
+import com.jme3.renderer.Limits;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,11 +46,18 @@ public class DataHelper {
     }
 
     // Read a specific line
-    public void generateData(int l) {
+    public void generateData(int l, LimitsUI limitsUI) {
         data.clear();
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
             List<String> lines = reader.readAllLines();
+            ArrayList<Integer> usableLines = new ArrayList<>();
+            for (int x = 0; x < lines.size(); x++) {
+                if (lines.get(x).length() > 1) {
+                    usableLines.add(x);
+                }
+            }
+            limitsUI.updateReadableLinesLabel(usableLines);
             String line = lines.get(l-1);
             line.substring(1, line.length()-2);
             String[] splitLine = line.split("\\(");

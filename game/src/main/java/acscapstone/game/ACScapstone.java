@@ -173,7 +173,7 @@ public class ACScapstone extends SimpleApplication {
 
     public void rerender(int l){
         rootNode.detachAllChildren();
-        dataHelper.generateData(l);
+        dataHelper.generateData(l, limitsUI);
         x.loadValues(dataHelper.data);
         x.loadSpheres(rootNode, assetManager, limitsUI);
     }

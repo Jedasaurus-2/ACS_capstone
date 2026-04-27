@@ -6,6 +6,8 @@ import com.jme3.scene.Node;
 import com.simsilica.lemur.*;
 import com.simsilica.lemur.style.BaseStyles;
 
+import java.util.ArrayList;
+
 public class LimitsUI {
 
     public Slider[] upperLimits =  new Slider[3];
@@ -17,6 +19,7 @@ public class LimitsUI {
     public Button applyButton;
     public TextField lineToRead;
     public Label lineToReadLabel;
+    public Label readableLinesLabel;
 
     public LimitsUI() {}
 
@@ -35,8 +38,10 @@ public class LimitsUI {
 
         lineToRead = new TextField("Enter Line Here", "glass");
         lineToReadLabel = new Label("Line To Read", "glass");
+        readableLinesLabel = new Label(" - Readable Lines - ", "glass");
         guiNode.attachChild(lineToRead);
         guiNode.attachChild(lineToReadLabel);
+        guiNode.attachChild(readableLinesLabel);
 
         for (int x = 0; x < 3; x++) {
 
@@ -121,6 +126,9 @@ public class LimitsUI {
         if (lineToReadLabel != null && lineToRead != null) {
             lineToReadLabel.setLocalTranslation(0f, h * 0.4f + lineToRead.getPreferredSize().y, 0f);
         }
+        if (readableLinesLabel != null) {
+            readableLinesLabel.setLocalTranslation(0f, h * 0.9f, 0f);
+        }
     }
 
     // Set the text of the labels to the sliders' values
@@ -182,5 +190,12 @@ public class LimitsUI {
             }
         }
         return true;
+    }
+
+    public void updateReadableLinesLabel(ArrayList<Integer> xs) {
+        readableLinesLabel.setText(" - Readable Lines - ");
+        for (int i = 0; i < xs.size(); i++) {
+            readableLinesLabel.setText(readableLinesLabel.getText() + "\n" + xs.get(i+1));
+        }
     }
 }
