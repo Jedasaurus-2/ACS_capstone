@@ -47,8 +47,9 @@ public class RenderingHelper {
         for (Vector3f v : values) {
             if (limitsUI.inRange(v)) {
                 Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-                int distance = (int) Math.sqrt(v.x * v.x + v.y * v.y + v.z + v.z) / 4;
-                mat.setColor("Color", ColorRGBA.fromRGBA255(255 - distance, distance / 2, distance, 0));
+                int distance = (int) Math.sqrt(v.x * v.x + v.y * v.y + v.z + v.z);
+                distance = (int) (distance * 4f);
+                mat.setColor("Color", ColorRGBA.fromRGBA255(redFormula(distance), greenFormula(distance), blueFormula(distance), greenFormula(distance)));
                 Geometry geom2 = new Geometry("Sphere", new Sphere(10, 10, 1f));
                 geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));
                 geom2.setMaterial(mat);
@@ -77,5 +78,16 @@ public class RenderingHelper {
             }
         }
         System.out.println(values);
+    }
+
+    // Assuming distance gets to 800
+    private int redFormula(int distance) {
+        return (int) Math.pow((distance - 400) / 26f,2);
+    }
+    private int greenFormula(int distance) {
+        return -redFormula(distance) + 250;
+    }
+    private int blueFormula(int distance) {
+        return (int) (distance * (255/900f));
     }
 }
