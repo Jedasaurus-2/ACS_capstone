@@ -69,7 +69,7 @@ public class RenderingHelper {
     }
 
     public void loadValues(HashMap<int[], String> data) {
-        this.values = new ArrayList<>();
+        values.clear();
         for (int x = 6; x <= 180; x += 6) {
             for (int y = 0; y <= 168; y += 6) {
                 for (int[] key : data.keySet()) {

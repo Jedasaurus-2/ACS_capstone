@@ -3,8 +3,11 @@ package acscapstone.game;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class DataHelper {
 
@@ -18,9 +21,11 @@ public class DataHelper {
 
     // Read the units file and make data
     public void generateData() {
+        data.clear();
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
-            String line = reader.readLine();
+            List<String> lines = reader.readAllLines();
+            String line = lines.getFirst();
             try {
                 line = line.substring(line.indexOf("0("));
             } catch (StringIndexOutOfBoundsException e) {
@@ -42,17 +47,12 @@ public class DataHelper {
 
     // Read a specific line
     public void generateData(int l) {
+        data.clear();
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
-            String line = "";
-            for (int i = 0; i < l; i++) {
-                line = reader.readLine();
-           }
-            try {
-                line = line.substring(line.indexOf("0("));
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println(e.getMessage());
-            }
+            List<String> lines = reader.readAllLines();
+            String line = lines.get(l-1);
+            line.substring(1, line.length()-2);
             String[] splitLine = line.split("\\(");
             for (int i = 0; i < splitLine.length; i++) {
                 if (splitLine[i].contains(")")) {
