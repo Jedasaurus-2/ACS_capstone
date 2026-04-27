@@ -1,14 +1,10 @@
 package acscapstone.game;
 
-import com.jme3.math.Vector3f;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-
 
 public class DataHelper {
 
@@ -20,6 +16,7 @@ public class DataHelper {
 
     public DataHelper() {}
 
+    // Read the units file and make data
     public void generateData() {
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
@@ -41,8 +38,32 @@ public class DataHelper {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        for (int[] key : data.keySet()) {
-            System.out.println(Arrays.toString(key) + ", " + data.get(key));
+    }
+
+    // Read a specific line
+    public void generateData(int l) {
+        try {
+            reader = new BufferedReader(new FileReader("units.txt"));
+            String line = "";
+            for (int i = 0; i < l; i++) {
+                line = reader.readLine();
+           }
+            try {
+                line = line.substring(line.indexOf("0("));
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println(e.getMessage());
+            }
+            String[] splitLine = line.split("\\(");
+            for (int i = 0; i < splitLine.length; i++) {
+                if (splitLine[i].contains(")")) {
+                    splitLine[i] = splitLine[i].replace(")", "");
+                    String[] tempLine = splitLine[i].split(",");
+                    int[] temp = {Integer.parseInt(tempLine[0]), Integer.parseInt(tempLine[1])};
+                    data.put(temp, tempLine[2]); // Put distance into the positon of x, y
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

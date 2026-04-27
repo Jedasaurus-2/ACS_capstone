@@ -154,9 +154,27 @@ public class ACScapstone extends SimpleApplication {
             }
         }
 
+        if (limitsUI.lineToRead.getText().length() > 27 && !limitsUI.lineToRead.getText().substring(0, "(Do not delete) Enter Here: ".length()).equals("(Do not delete) Enter Here: ")) {
+            limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
+        } else if (limitsUI.lineToRead.getText().length() < 28){
+            limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
+        }
         if (limitsUI.applyButton.isPressed()) {
             limitsUI.checkLimits();
             x.loadSpheres(rootNode, assetManager, limitsUI);
+            try {
+                int l = Integer.parseInt(limitsUI.lineToRead.getText().substring(28));
+                rerender(l);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
+    }
+
+    public void rerender(int l){
+        rootNode.detachAllChildren();
+        dataHelper.generateData(l);
+        x.loadValues(dataHelper.data);
+        x.loadSpheres(rootNode, assetManager, limitsUI);
     }
 }

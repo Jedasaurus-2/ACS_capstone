@@ -15,6 +15,8 @@ public class LimitsUI {
     public Label[] ySliderLabels = new Label[2];
     public Label[] zSliderLabels = new Label[2];
     public Button applyButton;
+    public TextField lineToRead;
+    public Label lineToReadLabel;
 
     public LimitsUI() {}
 
@@ -30,6 +32,12 @@ public class LimitsUI {
         float windowWidth = cam.getWidth();
         float windowHeight = cam.getHeight();
         // Because of x, y, and z limits
+
+        lineToRead = new TextField("Enter Line Here", "glass");
+        lineToReadLabel = new Label("Line To Read", "glass");
+        guiNode.attachChild(lineToRead);
+        guiNode.attachChild(lineToReadLabel);
+
         for (int x = 0; x < 3; x++) {
 
             // Make it with the default glass style
@@ -107,6 +115,12 @@ public class LimitsUI {
             zSliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.3f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
         }
         if (upperLimits[2] != null && applyButtons[2] != null) applyButton.setLocalTranslation(0,h * (2 + 1) * 0.1f + applyButtons[2].getPreferredSize().y + applyButton.getPreferredSize().y * 0.5f + 25, 0);
+        if (lineToRead != null) {
+            lineToRead.setLocalTranslation(0f, h * 0.4f, 0f);
+        }
+        if (lineToReadLabel != null && lineToRead != null) {
+            lineToReadLabel.setLocalTranslation(0f, h * 0.4f + lineToRead.getPreferredSize().y, 0f);
+        }
     }
 
     // Set the text of the labels to the sliders' values
