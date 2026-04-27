@@ -38,6 +38,7 @@ public class LimitsUI {
 
         lineToRead = new TextField("Enter Line Here", "glass");
         lineToReadLabel = new Label("Line To Read", "glass");
+        lineToRead.setPreferredWidth(350f);
         readableLinesLabel = new Label(" - Readable Lines - ", "glass");
         guiNode.attachChild(lineToRead);
         guiNode.attachChild(lineToReadLabel);
@@ -197,7 +198,7 @@ public class LimitsUI {
     public void updateReadableLinesLabel(ArrayList<Integer> xs) {
         readableLinesLabel.setText(" - Readable Lines - ");
         for (int i = 0; i < xs.size(); i++) {
-            readableLinesLabel.setText(readableLinesLabel.getText() + "\n" + xs.get(i+1));
+            readableLinesLabel.setText(readableLinesLabel.getText() + "\n" + (xs.get(i) + 1));
         }
     }
 }

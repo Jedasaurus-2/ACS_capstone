@@ -63,12 +63,11 @@ public class ACScapstone extends SimpleApplication {
         attachUI(); // Attach all the UI stuffs
 
         // Load data from the units file
-        dataHelper.generateData();
+        dataHelper.generateData(1, limitsUI);
 
         // Generate a bunch of spheres so I can see what is actually happening easier
         renderingHelper.loadValues(dataHelper.data);
         renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
-
 
         reshape(cam.getWidth(), cam.getHeight());
         simpleUpdate(0f);
