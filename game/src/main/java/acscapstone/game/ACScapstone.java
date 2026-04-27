@@ -4,13 +4,10 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.app.state.AppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
 
 import java.io.*;
@@ -31,8 +28,8 @@ public class ACScapstone extends SimpleApplication {
     private Scanner in;
     private PrintWriter writer;
     private final SerialPort comPort = SerialPort.getCommPort("COM3");
-    private DataHelper dataHelper = new DataHelper();
-    private RenderingHelper x = new RenderingHelper();
+    private final DataHelper dataHelper = new DataHelper();
+    private final RenderingHelper renderingHelper = new RenderingHelper();
 
     // Actually runs everything
     @Override
@@ -69,8 +66,8 @@ public class ACScapstone extends SimpleApplication {
         dataHelper.generateData();
 
         // Generate a bunch of spheres so I can see what is actually happening easier
-        x.loadValues(dataHelper.data);
-        x.loadSpheres(rootNode, assetManager, limitsUI);
+        renderingHelper.loadValues(dataHelper.data);
+        renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
 
 
         reshape(cam.getWidth(), cam.getHeight());
@@ -143,10 +140,11 @@ public class ACScapstone extends SimpleApplication {
         getLimits();
         updateLabels();
 
+        // Read the stream
         if (in.hasNext()) {
-            //System.out.println("got data");
             String data = in.next();
             System.out.println(data);
+            // Write it
             try {
                 writer.print(data);
             } catch (Exception e) {
@@ -154,14 +152,16 @@ public class ACScapstone extends SimpleApplication {
             }
         }
 
+        // Did the user try to change the text box in a not nice way?
         if (limitsUI.lineToRead.getText().length() > 27 && !limitsUI.lineToRead.getText().substring(0, "(Do not delete) Enter Here: ".length()).equals("(Do not delete) Enter Here: ")) {
             limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
         } else if (limitsUI.lineToRead.getText().length() < 28){
             limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
         }
+        // Read the user input
         if (limitsUI.applyButton.isPressed()) {
             limitsUI.checkLimits();
-            x.loadSpheres(rootNode, assetManager, limitsUI);
+            renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
             try {
                 int l = Integer.parseInt(limitsUI.lineToRead.getText().substring(28));
                 rerender(l);
@@ -171,10 +171,14 @@ public class ACScapstone extends SimpleApplication {
         }
     }
 
+    // Remove all spheres
     public void rerender(int l){
         rootNode.detachAllChildren();
+        // Get the new data from user input
         dataHelper.generateData(l, limitsUI);
-        x.loadValues(dataHelper.data);
-        x.loadSpheres(rootNode, assetManager, limitsUI);
+        // Load the values into limitsUI
+        renderingHelper.loadValues(dataHelper.data);
+        // Load the spheres
+        renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
     }
 }

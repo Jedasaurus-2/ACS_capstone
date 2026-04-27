@@ -51,15 +51,21 @@ public class DataHelper {
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
             List<String> lines = reader.readAllLines();
+            // Get the list of readable lines (length based currently)
             ArrayList<Integer> usableLines = new ArrayList<>();
             for (int x = 0; x < lines.size(); x++) {
-                if (lines.get(x).length() > 1) {
+                if (lines.get(x).length() > 800) {
                     usableLines.add(x);
                 }
             }
+            // Call it
             limitsUI.updateReadableLinesLabel(usableLines);
+
+            // This string specifically
             String line = lines.get(l-1);
             line.substring(1, line.length()-2);
+
+            // Get the values from the list
             String[] splitLine = line.split("\\(");
             for (int i = 0; i < splitLine.length; i++) {
                 if (splitLine[i].contains(")")) {

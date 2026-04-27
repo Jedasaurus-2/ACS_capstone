@@ -163,6 +163,7 @@ public class LimitsUI {
         return limits;
     }
 
+    // Based on checked options in the limitsUI, can this position render?
     public boolean inRange(Vector3f pos) {
         int magnitude = 1;
         if (applyButtons[0].isChecked()) {
@@ -192,6 +193,7 @@ public class LimitsUI {
         return true;
     }
 
+    // Sets up the readable lines label at the top left using an array of ints
     public void updateReadableLinesLabel(ArrayList<Integer> xs) {
         readableLinesLabel.setText(" - Readable Lines - ");
         for (int i = 0; i < xs.size(); i++) {

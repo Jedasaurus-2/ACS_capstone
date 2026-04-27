@@ -68,6 +68,7 @@ public class RenderingHelper {
         }
     }
 
+    // Put the values into values based on data
     public void loadValues(HashMap<int[], String> data) {
         values.clear();
         for (int x = 6; x <= 180; x += 6) {
