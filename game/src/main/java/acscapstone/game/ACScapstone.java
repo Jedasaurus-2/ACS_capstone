@@ -59,6 +59,7 @@ public class ACScapstone extends SimpleApplication {
 
         flyCam.setDragToRotate(true); // So that you're not tabbed into the game with your mouse
         flyCam.setEnabled(false);
+        cam.setFrustumFar(5000f);
 
         attachUI(); // Attach all the UI stuffs
 
@@ -79,7 +80,9 @@ public class ACScapstone extends SimpleApplication {
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addListener(analogListener, "Left", "Right", "Up", "Down");
+        inputManager.addMapping("Forward", new KeyTrigger(KeyInput.KEY_Q));
+        inputManager.addMapping("Back", new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addListener(analogListener, "Left", "Right", "Up", "Down", "Forward", "Back");
     }
 
     // Listener for custom controls
@@ -98,6 +101,11 @@ public class ACScapstone extends SimpleApplication {
             case "Down":
                 camRotationHelper.incrementVAngle(speed);
                 break;
+            case "Forward":
+                camRotationHelper.distance *= 1.01f;
+                break;
+            case "Back":
+                camRotationHelper.distance *= 0.99f;
             case "RotateLeft":
             case "RotateRight":
                 float angle = (name.equals("RotateLeft") ? value : -value);
@@ -162,7 +170,7 @@ public class ACScapstone extends SimpleApplication {
             limitsUI.checkLimits();
             renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
             try {
-                int l = Integer.parseInt(limitsUI.lineToRead.getText().substring(28));
+                int l = limitsUI.readableLines.getSelectionModel().getSelection();
                 rerender(l);
             } catch (Exception e) {
                 System.out.println(e.getMessage());

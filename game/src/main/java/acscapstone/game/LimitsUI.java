@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.*;
+import com.simsilica.lemur.core.VersionedList;
 import com.simsilica.lemur.style.BaseStyles;
 
 import java.util.ArrayList;
@@ -18,8 +19,10 @@ public class LimitsUI {
     public Label[] zSliderLabels = new Label[2];
     public Button applyButton;
     public TextField lineToRead;
+    // What the list renders
+    public VersionedList<Integer> model = new VersionedList<>();
+    public ListBox<Integer> readableLines;
     public Label lineToReadLabel;
-    public Label readableLinesLabel;
 
     public LimitsUI() {}
 
@@ -39,10 +42,10 @@ public class LimitsUI {
         lineToRead = new TextField("Enter Line Here", "glass");
         lineToReadLabel = new Label("Line To Read", "glass");
         lineToRead.setPreferredWidth(350f);
-        readableLinesLabel = new Label(" - Readable Lines - ", "glass");
+        readableLines = new ListBox<>(model, "Glass");
         guiNode.attachChild(lineToRead);
         guiNode.attachChild(lineToReadLabel);
-        guiNode.attachChild(readableLinesLabel);
+        guiNode.attachChild(readableLines);
 
         for (int x = 0; x < 3; x++) {
 
@@ -127,8 +130,9 @@ public class LimitsUI {
         if (lineToReadLabel != null && lineToRead != null) {
             lineToReadLabel.setLocalTranslation(0f, h * 0.4f + lineToRead.getPreferredSize().y, 0f);
         }
-        if (readableLinesLabel != null) {
-            readableLinesLabel.setLocalTranslation(0f, h * 0.9f, 0f);
+        if (readableLines != null) {
+            readableLines.setLocalTranslation(0f, h * 0.9f, 0f);
+            readableLines.setVisibleItems(h / 100);
         }
     }
 
@@ -196,9 +200,13 @@ public class LimitsUI {
 
     // Sets up the readable lines label at the top left using an array of ints
     public void updateReadableLinesLabel(ArrayList<Integer> xs) {
-        readableLinesLabel.setText(" - Readable Lines - ");
+        readableLines.setScrollOnHover(true);
         for (int i = 0; i < xs.size(); i++) {
-            readableLinesLabel.setText(readableLinesLabel.getText() + "\n" + (xs.get(i) + 1));
+            if (i < model.size()) {
+                model.set(i, xs.get(i) + 1);
+            } else {
+                model.add(xs.get(i) + 1);
+            }
         }
     }
 }
