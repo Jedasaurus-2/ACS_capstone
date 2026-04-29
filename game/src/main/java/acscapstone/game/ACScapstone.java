@@ -159,17 +159,12 @@ public class ACScapstone extends SimpleApplication {
             }
         }
 
-        // Did the user try to change the text box in a not nice way?
-        if (limitsUI.lineToRead.getText().length() > 27 && !limitsUI.lineToRead.getText().substring(0, "(Do not delete) Enter Here: ".length()).equals("(Do not delete) Enter Here: ")) {
-            limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
-        } else if (limitsUI.lineToRead.getText().length() < 28){
-            limitsUI.lineToRead.setText("(Do not delete) Enter Here: ");
-        }
         // Read the user input
         if (limitsUI.applyButton.isPressed()) {
             limitsUI.checkLimits();
             renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
             try {
+                // Get selected value
                 int l = limitsUI.readableLines.getSelectionModel().getSelection();
                 rerender(l);
             } catch (Exception e) {

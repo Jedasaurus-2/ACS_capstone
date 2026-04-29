@@ -62,8 +62,7 @@ public class DataHelper {
             limitsUI.updateReadableLinesLabel(usableLines);
 
             // This string specifically
-            String line = lines.get(l-1);
-            line.substring(1, line.length()-2);
+            String line = lines.get(l);
 
             // Get the values from the list
             String[] splitLine = line.split("\\(");

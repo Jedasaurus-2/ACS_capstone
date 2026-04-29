@@ -77,7 +77,7 @@ public class RenderingHelper {
                 }
             }
         }
-        System.out.println(values);
+        //System.out.println(values);
     }
 
     // Assuming distance gets to 800

@@ -18,11 +18,10 @@ public class LimitsUI {
     public Label[] ySliderLabels = new Label[2];
     public Label[] zSliderLabels = new Label[2];
     public Button applyButton;
-    public TextField lineToRead;
-    // What the list renders
+    // What the ListBox Renders
     public VersionedList<Integer> model = new VersionedList<>();
     public ListBox<Integer> readableLines;
-    public Label lineToReadLabel;
+    public Label readableLinesLabel;
 
     public LimitsUI() {}
 
@@ -39,13 +38,10 @@ public class LimitsUI {
         float windowHeight = cam.getHeight();
         // Because of x, y, and z limits
 
-        lineToRead = new TextField("Enter Line Here", "glass");
-        lineToReadLabel = new Label("Line To Read", "glass");
-        lineToRead.setPreferredWidth(350f);
         readableLines = new ListBox<>(model, "Glass");
-        guiNode.attachChild(lineToRead);
-        guiNode.attachChild(lineToReadLabel);
+        readableLinesLabel = new Label(" - Scans - ", "glass");
         guiNode.attachChild(readableLines);
+        guiNode.attachChild(readableLinesLabel);
 
         for (int x = 0; x < 3; x++) {
 
@@ -123,18 +119,18 @@ public class LimitsUI {
             ySliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.2f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
             zSliderLabels[1].setLocalTranslation(upperLimits[1].getPreferredSize().x, h * 0.3f - upperLimits[1].getPreferredSize().y * 0.5f, 0);
         }
-        if (upperLimits[2] != null && applyButtons[2] != null) applyButton.setLocalTranslation(0,h * (2 + 1) * 0.1f + applyButtons[2].getPreferredSize().y + applyButton.getPreferredSize().y * 0.5f + 25, 0);
-        if (lineToRead != null) {
-            lineToRead.setLocalTranslation(0f, h * 0.4f, 0f);
-        }
-        if (lineToReadLabel != null && lineToRead != null) {
-            lineToReadLabel.setLocalTranslation(0f, h * 0.4f + lineToRead.getPreferredSize().y, 0f);
-        }
         if (readableLines != null) {
             readableLines.setLocalTranslation(0f, h * 0.9f, 0f);
             readableLines.setVisibleItems(h / 100);
         }
+        if (readableLinesLabel != null) {
+            readableLinesLabel.setLocalTranslation(0f, h * 0.9f + readableLinesLabel.getPreferredSize().y + 10, 0f);
+        }
+        if (applyButton != null) {
+            applyButton.setLocalTranslation(0f, h * 0.4f, 0f);
+        }
     }
+
 
     // Set the text of the labels to the sliders' values
     public void updateLabels(float[][] limits) {
@@ -198,15 +194,12 @@ public class LimitsUI {
         return true;
     }
 
-    // Sets up the readable lines label at the top left using an array of ints
+    // Sets up the readable lines at the top left using an array of ints
     public void updateReadableLinesLabel(ArrayList<Integer> xs) {
         readableLines.setScrollOnHover(true);
+        model.clear();
         for (int i = 0; i < xs.size(); i++) {
-            if (i < model.size()) {
-                model.set(i, xs.get(i) + 1);
-            } else {
-                model.add(xs.get(i) + 1);
-            }
+            model.add(xs.get(i) + 1);
         }
     }
 }
