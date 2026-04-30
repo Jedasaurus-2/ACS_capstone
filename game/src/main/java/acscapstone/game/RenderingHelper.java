@@ -1,6 +1,5 @@
 package acscapstone.game;
 
-
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -42,10 +41,9 @@ public class RenderingHelper {
     }
 
     // Iterates and makes spheres so I can visualize what I am seeing
-    public void loadSpheres(Node node, AssetManager assetManager, LimitsUI limitsUI) {
+    public void loadSpheres(Node node, AssetManager assetManager) {
         node.detachAllChildren();
         for (Vector3f v : values) {
-            if (limitsUI.inRange(v)) {
                 Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
                 int distance = (int) Math.sqrt(v.x * v.x + v.y * v.y + v.z + v.z);
                 distance = (int) (distance * 4f);
@@ -56,7 +54,6 @@ public class RenderingHelper {
                 geom2.setLocalTranslation(v); // Set position
 
                 node.attachChild(geom2);
-            }
         }
     }
 

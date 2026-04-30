@@ -24,7 +24,6 @@ public class ACScapstone extends SimpleApplication {
     private final CamRotationHelper camRotationHelper = new CamRotationHelper(359f, 179f);
     private final LimitsUI limitsUI = new LimitsUI();
     // x (0), y (1), and z (2) each have upper (0) and lower (1) limits
-    private float[][] limits = new float[3][2];
     private Scanner in;
     private PrintWriter writer;
     private final SerialPort comPort = SerialPort.getCommPort("COM3");
@@ -68,7 +67,7 @@ public class ACScapstone extends SimpleApplication {
 
         // Generate a bunch of spheres so I can see what is actually happening easier
         renderingHelper.loadValues(dataHelper.data);
-        renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
+        renderingHelper.loadSpheres(rootNode, assetManager);
 
         reshape(cam.getWidth(), cam.getHeight());
         simpleUpdate(0f);
@@ -123,17 +122,6 @@ public class ACScapstone extends SimpleApplication {
         limitsUI.attachUI(guiNode, cam);
     }
 
-    // Get the value of all of the sliders
-    private void getLimits(){
-        // All are on a range of 0f - 100f
-        limits = limitsUI.getLimits();
-    }
-
-    // Set the text on the labels
-    private void updateLabels(){
-        limitsUI.updateLabels(limits);
-    }
-
     // Called when the window size changes
     @Override
     public void reshape(int w, int h) {
@@ -144,9 +132,6 @@ public class ACScapstone extends SimpleApplication {
     // Called like 10ish times per second
     @Override
     public void simpleUpdate(float tpf)  {
-        getLimits();
-        updateLabels();
-
         // Read the stream
         if (in.hasNext()) {
             String data = in.next();
@@ -161,8 +146,7 @@ public class ACScapstone extends SimpleApplication {
 
         // Read the user input
         if (limitsUI.applyButton.isPressed()) {
-            limitsUI.checkLimits();
-            renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
+            renderingHelper.loadSpheres(rootNode, assetManager);
             try {
                 // Get selected value
                 int l = limitsUI.readableLines.getSelectionModel().getSelection();
@@ -181,6 +165,6 @@ public class ACScapstone extends SimpleApplication {
         // Load the values into limitsUI
         renderingHelper.loadValues(dataHelper.data);
         // Load the spheres
-        renderingHelper.loadSpheres(rootNode, assetManager, limitsUI);
+        renderingHelper.loadSpheres(rootNode, assetManager);
     }
 }

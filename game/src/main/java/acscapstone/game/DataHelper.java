@@ -1,7 +1,5 @@
 package acscapstone.game;
 
-import com.jme3.renderer.Limits;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,6 +14,7 @@ public class DataHelper {
     public HashMap<int[], String> data = new HashMap<>(); // This will be the data...
     // Basically, I am going to check if the data exists, since there are some data holes
     // If it does... GREAT. If it doesn't, use a default which is defined in another class
+    public int greatestDistance = 0;
 
     public DataHelper() {}
 
@@ -45,8 +44,9 @@ public class DataHelper {
         }
     }
 
-    // Read a specific line
+    // Read a specific line of data
     public void generateData(int l, LimitsUI limitsUI) {
+        greatestDistance = 0;
         data.clear();
         try {
             reader = new BufferedReader(new FileReader("units.txt"));
@@ -71,7 +71,10 @@ public class DataHelper {
                     splitLine[i] = splitLine[i].replace(")", "");
                     String[] tempLine = splitLine[i].split(",");
                     int[] temp = {Integer.parseInt(tempLine[0]), Integer.parseInt(tempLine[1])};
-                    data.put(temp, tempLine[2]); // Put distance into the positon of x, y
+                    if (Integer.parseInt(tempLine[2]) > greatestDistance) {
+                        greatestDistance = Integer.parseInt(tempLine[2]);
+                    }
+                    data.put(temp, tempLine[2]); // Put distance into the positon of x, y. Distance is a string
                 }
             }
         } catch (IOException e) {
