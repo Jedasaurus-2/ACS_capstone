@@ -48,7 +48,7 @@ public class RenderingHelper {
                 int distance = (int) Math.sqrt(v.x * v.x + v.y * v.y + v.z + v.z);
                 distance = (int) (distance * 4f);
                 mat.setColor("Color", ColorRGBA.fromRGBA255(redFormula(distance), greenFormula(distance), blueFormula(distance), greenFormula(distance)));
-                Geometry geom2 = new Geometry("Sphere", new Sphere(10, 10, 1f));
+                Geometry geom2 = new Geometry("Sphere", new Sphere(5, 5, 1f));
                 geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));
                 geom2.setMaterial(mat);
                 geom2.setLocalTranslation(v); // Set position
@@ -61,7 +61,7 @@ public class RenderingHelper {
     public void loadValues(HashMap<int[], String> data) {
         values.clear();
         for (int x = 1; x < 180; x += 1) {
-            for (int y = 0; y <= 168; y += 6) {
+            for (int y = 0; y <= 168; y += 1) {
                 for (int[] key : data.keySet()) {
                     if (key[0] == x && key[1] == y) {
                         values.add(convertToSpherical(x, y, data.get(key)));
@@ -74,12 +74,12 @@ public class RenderingHelper {
                 }
             }
         }
-        //System.out.println(values);
+        System.out.println(values.size());
     }
 
     // Assuming distance gets to 800
     private int redFormula(int distance) {
-        return (int) Math.pow((distance - 400) / 26f,2);
+        return (int) Math.pow((distance - 400) / 26f, 2);
     }
     private int greenFormula(int distance) {
         return -redFormula(distance) + 250;

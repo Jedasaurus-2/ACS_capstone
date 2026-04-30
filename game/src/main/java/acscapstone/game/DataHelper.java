@@ -3,9 +3,7 @@ package acscapstone.game;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DataHelper {
 
@@ -17,32 +15,6 @@ public class DataHelper {
     public int greatestDistance = 0;
 
     public DataHelper() {}
-
-    // Read the units file and make data
-    public void generateData() {
-        data.clear();
-        try {
-            reader = new BufferedReader(new FileReader("units.txt"));
-            List<String> lines = reader.readAllLines();
-            String line = lines.getFirst();
-            try {
-                line = line.substring(line.indexOf("0("));
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println(e.getMessage());
-            }
-            String[] splitLine = line.split("\\(");
-            for (int i = 0; i < splitLine.length; i++) {
-                if (splitLine[i].contains(")")) {
-                    splitLine[i] = splitLine[i].replace(")", "");
-                    String[] tempLine = splitLine[i].split(",");
-                    int[] temp = {Integer.parseInt(tempLine[0]), Integer.parseInt(tempLine[1])};
-                    data.put(temp, tempLine[2]); // Put distance into the positon of x, y
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     // Read a specific line of data
     public void generateData(int l, LimitsUI limitsUI) {
@@ -58,23 +30,31 @@ public class DataHelper {
                     usableLines.add(x);
                 }
             }
-            // Call it
+
+            // Call it to update the listbox
             limitsUI.updateReadableLinesLabel(usableLines);
 
             // This string specifically
+            //System.out.println(l);
             String line = lines.get(l);
 
             // Get the values from the list
             String[] splitLine = line.split("\\(");
+            //System.out.println(Arrays.toString(splitLine));
             for (int i = 0; i < splitLine.length; i++) {
                 if (splitLine[i].contains(")")) {
-                    splitLine[i] = splitLine[i].replace(")", "");
-                    String[] tempLine = splitLine[i].split(",");
-                    int[] temp = {Integer.parseInt(tempLine[0]), Integer.parseInt(tempLine[1])};
-                    if (Integer.parseInt(tempLine[2]) > greatestDistance) {
-                        greatestDistance = Integer.parseInt(tempLine[2]);
+                    try {
+                        splitLine[i] = splitLine[i].replace(")", "");
+                        String[] tempLine = splitLine[i].split(",");
+                        //System.out.println(Arrays.toString(tempLine));
+                        int[] temp = {Integer.parseInt(tempLine[0]), Integer.parseInt(tempLine[1])};
+                        if (Integer.parseInt(tempLine[2]) > greatestDistance) {
+                            greatestDistance = Integer.parseInt(tempLine[2]);
+                        }
+                        data.put(temp, tempLine[2]); // Put distance into the positon of x, y. Distance is a string
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
-                    data.put(temp, tempLine[2]); // Put distance into the positon of x, y. Distance is a string
                 }
             }
         } catch (IOException e) {

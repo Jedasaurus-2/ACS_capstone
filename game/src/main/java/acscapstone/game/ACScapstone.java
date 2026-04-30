@@ -112,7 +112,7 @@ public class ACScapstone extends SimpleApplication {
                 cam.setRotation(cam.getRotation().mult(q));
                 break;
         }
-        cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
+        cam.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
         cam.setLocation(camRotationHelper.generatePosition());
     };
 
@@ -150,6 +150,7 @@ public class ACScapstone extends SimpleApplication {
             try {
                 // Get selected value
                 int l = limitsUI.readableLines.getSelectionModel().getSelection();
+                l = limitsUI.model.get(l) - 1;
                 rerender(l);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
