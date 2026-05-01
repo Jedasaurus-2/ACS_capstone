@@ -45,10 +45,10 @@ public class RenderingHelper {
         node.detachAllChildren();
         for (Vector3f v : values) {
                 Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-                int distance = (int) Math.sqrt(v.x * v.x + v.y * v.y + v.z + v.z);
-                distance = (int) (distance * 4f);
+                int distance = (int)(v.distance(Vector3f.ZERO));
+                distance = (int) (distance * 2f);
                 mat.setColor("Color", ColorRGBA.fromRGBA255(redFormula(distance), greenFormula(distance), blueFormula(distance), greenFormula(distance)));
-                Geometry geom2 = new Geometry("Sphere", new Sphere(5, 5, 1f));
+                Geometry geom2 = new Geometry("Sphere", new Sphere(3, 3, 1f));
                 geom2.rotateUpTo(new Vector3f(0f, 0f, -1f));
                 geom2.setMaterial(mat);
                 geom2.setLocalTranslation(v); // Set position
